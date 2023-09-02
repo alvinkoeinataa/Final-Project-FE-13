@@ -1,13 +1,12 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-// import React, { useState } from "react";
+
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 function Register() {
   const router = useRouter();
-  // const [savePicture, setSavePicture] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -25,7 +24,7 @@ function Register() {
       username: Yup.string().min(5, "Must be 5 characters or more").max(15, "Must be less than 15 characters").required("Required"),
       email: Yup.string().email("Invalid email address").required("Required"),
       password: Yup.string()
-        .min(8, "Must be 8 characters or more")
+        .min(5, "Must be 5 characters or more")
         .max(15, "Must be less than 15 characters")
         .matches(/^.*(?=.*\d)((?=.*[a-zA-Z]){1}).*$/, "Password must contain atleast one letter and one number")
         .required("Required"),
@@ -75,7 +74,7 @@ function Register() {
 
   return (
     <>
-      <div className="flex justify-center items-center h-screen bg-blue-400">
+      <div className="flex justify-center items-center h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
         <div className="bg-white p-8 rounded shadow-md w-96">
           <h5 className="text-center text-xl font-medium mb-2">Register Account</h5>
           <form onSubmit={formik.handleSubmit}>

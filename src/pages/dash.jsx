@@ -8,6 +8,9 @@ const Explore = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [postLikes, setPostLikes] = useState({}); // menyimpan dan merubah like
+  const [commentText, setCommentText] = useState({});
+  const [postComments, setPostComments] = useState({});
 
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState(null);
@@ -38,6 +41,55 @@ const Explore = () => {
     }
   };
 
+  const handleLikePost = async (postId) => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/like`,
+        { postId }, // Kirim data postId ke server
+        {
+          headers: {
+            apiKey: process.env.NEXT_PUBLIC_API_KEY,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setPostLikes((prevLikes) => ({
+        ...prevLikes,
+        [postId]: prevLikes[postId] + 1,
+      }));
+
+      console.log("Post Liked:", response.data);
+    } catch (error) {
+      console.error("Error liking post:", error);
+    }
+  };
+
+  const handleUnlikePost = async (postId) => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/unlike`,
+        { postId }, // Kirim data postId ke server
+        {
+          headers: {
+            apiKey: process.env.NEXT_PUBLIC_API_KEY,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      // mengupdate state
+      setPostLikes((prevLikes) => ({
+        ...prevLikes,
+        [postId]: prevLikes[postId] - 1,
+      }));
+
+      console.log("Post Unliked:", response.data);
+    } catch (error) {
+      console.error("Error unliking post:", error);
+    }
+  };
+
   useEffect(() => {
     if (!userId || !token) {
       const a = localStorage.getItem("userId");
@@ -49,8 +101,17 @@ const Explore = () => {
     }
   }, []);
 
+  useEffect(() => {
+    // Memperbarui jumlah likes awal pada setiap postingan
+    const initialLikes = {};
+    posts.forEach((post) => {
+      initialLikes[post.id] = post.totalLikes;
+    });
+    setPostLikes(initialLikes);
+  }, [posts]);
+
   return (
-    <div className="mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 py-4">
+    <div className="mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
       <div className="flex flex-col items-center">
         <div className="w-full md:w-1/2 bg-white  p-4">
           {/* Navbar */}
@@ -62,7 +123,7 @@ const Explore = () => {
           <ul className="grid grid-cols-1">
             {posts.map((post, index) => (
               <li key={`${post.id}-${index}`} className="flex flex-col items-center border border-black">
-                <div className="mt-10">
+                <div className="mt-4">
                   {post.user && (
                     <div className="flex">
                       <div>{post.user.profilePictureUrl && <img src={post.user.profilePictureUrl} alt="gambar" className="w-8 h-8 rounded-full mr-2" />}</div>
@@ -73,15 +134,26 @@ const Explore = () => {
                   )}
 
                   <div className="flex items-center justify-center mb-2">
-                    <img src={post.imageUrl} alt="gambar" className="w-full max-h-60" />
+                    <img src={post.imageUrl} alt="gambar" className="w-full max-h-90" />
                   </div>
 
-                  <p>{post.totalLikes} likes</p>
                   {post.user && (
-                    <div className="flex flex-col">
+                    <div className="pl-3">
+                      <button onClick={() => handleLikePost(post.id)} className="bg-blue-500 text-white px-2 py-1 rounded mr-2">
+                        Like
+                      </button>
+                      <button onClick={() => handleUnlikePost(post.id)} className="bg-red-500 text-white px-2 py-1 rounded">
+                        Unlike
+                      </button>
+                    </div>
+                  )}
+
+                  <p className="pl-3">{postLikes[post.id] || post.totalLikes} likes</p>
+                  {post.user && (
+                    <div className="flex flex-col pl-3">
                       <div className="flex flex-row">
-                        <p className="mr-4">{post.user.username}</p>
-                        <p className="mb-2">{post.caption}</p>
+                        <p className="mr-4 ">{post.user.username}</p>
+                        <p className="mb-6">{post.caption}</p>
                       </div>
                     </div>
                   )}

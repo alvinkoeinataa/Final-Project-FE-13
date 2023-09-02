@@ -79,6 +79,7 @@ const ProfilePage = () => {
     if (userId) {
       fetchUserData();
       fetchUserPosts();
+
       fetchUserFollowing();
       fetchUserFollowers();
     }
@@ -90,26 +91,34 @@ const ProfilePage = () => {
 
   // console.log(userFollowing);
   return (
-    <div className="p-8">
-      <div className="mt-4 flex items-center">
-        <img className="w-20 h-20 rounded-full mr-4" src={userData.profilePictureUrl} alt="gambar" />
+    <div className="w-3/4 mx-auto">
+      <div className="mt-4 flex flex-col md:flex-row items-center">
+        <img className="w-20 h-20 rounded-full mb-4 md:mb-0" src={userData.profilePictureUrl} alt="Profile" />
 
-        <div>
+        <div className="md:ml-4">
           <p className="text-xl font-semibold">{userData.username}</p>
           <p className="text-gray-600 mb-1">{userData.name}</p>
-          <p className="text-gray-600">{userData.bio}</p>
+          <p className="text-gray-600 mb-1">{userData.bio}</p>
           <p className="text-gray-600">{userData.website}</p>
         </div>
 
-        <div className="mx-8">{userFollowing?.totalItems || "0"} following</div>
-        <div>{userFollowers?.totalItems || "0"} followers</div>
+        <div className="flex mt-4 md:mt-0 md:ml-auto">
+          <div className="mr-4">
+            <p className="font-semibold">{userFollowing?.totalItems || "0"}</p>
+            <p className="text-gray-600">Following</p>
+          </div>
+          <div>
+            <p className="font-semibold">{userFollowers?.totalItems || "0"}</p>
+            <p className="text-gray-600">Followers</p>
+          </div>
+        </div>
       </div>
 
       <h2 className="mt-8 text-2xl font-semibold">User Posts</h2>
-      <div className="grid grid-cols-3 mt-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4">
         {userPosts.map((post) => (
-          <div key={post.id} className="p-2">
-            <img className="w-full h-40 object-cover rounded" src={post.imageUrl} alt="gambar" />
+          <div key={post.id}>
+            <img className="w-full h-40 object-cover rounded" src={post.imageUrl} alt="Post" />
           </div>
         ))}
       </div>

@@ -1,12 +1,14 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
+
+import { useRouter } from "next/router";
 
 function UpdateProfile() {
   const [userId, setUserId] = useState(null);
   const [token, setToken] = useState(null);
   const [userData, setUserData] = useState(null);
+  const router = useRouter();
 
   const fetchUserData = async () => {
     try {
@@ -72,6 +74,7 @@ function UpdateProfile() {
         .request(config)
         .then((response) => {
           alert(response.data.message);
+          router.push("/dash");
         })
         .catch((error) => {
           // alert(error.message);

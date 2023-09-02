@@ -31,8 +31,7 @@ const Navhome = () => {
 
   return (
     <div className="flex flex-wrap items-center justify-center space-x-0 md:space-x-4 md:flex-nowrap">
-      <div className="px-4 py-2 rounded text-bold text-xl">{name}</div>
-      <Link href={"/dash"}>Home</Link>
+      <div className="px-2 py-2 rounded text-bold text-xl">PHOTOGRAM</div>
       <button className="bg-indigo-500 text-white px-4 py-2 rounded  md:w-auto w-full" onClick={handleProfileClick}>
         Profile
       </button>

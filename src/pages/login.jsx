@@ -23,7 +23,7 @@ function Login() {
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Invalid email address").required("Required"),
-      password: Yup.string().min(5, "Minimum 8 characters").required("Required"),
+      password: Yup.string().min(5, "Minimum 5 characters").required("Required"),
     }),
 
     onSubmit: (values) => {
@@ -39,7 +39,7 @@ function Login() {
         })
         .then((res) => {
           const token = res.data.token;
-          console.log(token);
+          // console.log(token);
           localStorage.setItem("token", token);
 
           const name = res.data.user.name;
@@ -68,7 +68,7 @@ function Login() {
 
   return (
     <>
-      <div className="flex justify-center items-center h-screen bg-blue-400">
+      <div className="flex justify-center items-center h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
         <div className="bg-white p-8 rounded shadow-md w-150">
           <div className="text-center mb-4">
             <h3 className="text-3xl font-semibold">Photogram</h3>

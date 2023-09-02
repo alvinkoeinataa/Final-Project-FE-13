@@ -16,7 +16,7 @@ function Logout() {
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         localStorage.clear();
 
         router.push("/login");
