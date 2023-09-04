@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Logout from "./log out";
+import Logout from "./logout";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
