@@ -51,7 +51,6 @@ function Register() {
           email: values.email,
           password: values.password,
           passwordRepeat: values.passwordRepeat,
-          // profilePictureUrl: savePicture,
           phoneNumber: values.phoneNumber,
           bio: values.bio,
           website: values.website,

@@ -1,5 +1,7 @@
 import Head from "next/head";
 import Login from "./login";
+import Register from "./register";
+import Product from "./product";
 
 export default function Home() {
   return (

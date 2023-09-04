@@ -21,9 +21,9 @@ export default function CreatePost() {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/upload-image",
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/upload-image`,
       headers: {
-        apiKey: "c7b411cc-0e7c-4ad1-aa3f-822b00e7734b",
+        apiKey: process.env.NEXT_PUBLIC_API_KEY,
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
       },
@@ -41,9 +41,9 @@ export default function CreatePost() {
         let config = {
           method: "post",
           maxBodyLength: Infinity,
-          url: "https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/create-post",
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/create-post`,
           headers: {
-            apiKey: "c7b411cc-0e7c-4ad1-aa3f-822b00e7734b",
+            apiKey: process.env.NEXT_PUBLIC_API_KEY,
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },

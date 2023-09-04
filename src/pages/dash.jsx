@@ -9,8 +9,6 @@ const Explore = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [postLikes, setPostLikes] = useState({}); // menyimpan dan merubah like
-  const [commentText, setCommentText] = useState({});
-  const [postComments, setPostComments] = useState({});
 
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState(null);
@@ -114,7 +112,6 @@ const Explore = () => {
     <div className="mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
       <div className="flex flex-col items-center">
         <div className="w-full md:w-1/2 bg-white  p-4">
-          {/* Navbar */}
           <Navhome />
         </div>
 
