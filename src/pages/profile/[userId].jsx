@@ -16,7 +16,7 @@ const ProfilePage = () => {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/user/${userId}`, {
           headers: {
             apiKey: process.env.NEXT_PUBLIC_API_KEY,
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         });
 
@@ -32,7 +32,7 @@ const ProfilePage = () => {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/users-post/${userId}?size=10&page=1`, {
           headers: {
             apiKey: process.env.NEXT_PUBLIC_API_KEY,
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         });
 
@@ -49,7 +49,7 @@ const ProfilePage = () => {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/my-following?size=10&page=1`, {
           headers: {
             apiKey: process.env.NEXT_PUBLIC_API_KEY,
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         });
 

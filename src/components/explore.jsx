@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import Navhome from "@/components/navhome";
+import Cookies from "js-cookie";
 
 const Explore = () => {
   const [posts, setPosts] = useState([]);
@@ -18,7 +19,7 @@ const Explore = () => {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/explore-post?size=10&page=${currentPage}`, {
         headers: {
           apiKey: process.env.NEXT_PUBLIC_API_KEY,
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${Cookies.get("token")}`,
         },
       });
 
@@ -47,7 +48,7 @@ const Explore = () => {
         {
           headers: {
             apiKey: process.env.NEXT_PUBLIC_API_KEY,
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
@@ -71,7 +72,7 @@ const Explore = () => {
         {
           headers: {
             apiKey: process.env.NEXT_PUBLIC_API_KEY,
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
@@ -90,8 +91,8 @@ const Explore = () => {
 
   useEffect(() => {
     if (!userId || !token) {
-      const a = localStorage.getItem("userId");
-      const b = localStorage.getItem("token");
+      const a = Cookies.get("userId");
+      const b = Cookies.get("token");
 
       setUserId(a);
       setToken(b);

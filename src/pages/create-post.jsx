@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 export default function CreatePost() {
   const [file, setFile] = useState("");
@@ -69,8 +70,8 @@ export default function CreatePost() {
 
   useEffect(() => {
     if (!userId || !token) {
-      const a = localStorage.getItem("userId");
-      const b = localStorage.getItem("token");
+      const a = Cookies.get("userId");
+      const b = Cookies.get("token");
       setUserId(a);
       setToken(b);
     }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Logout from "./logout";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 const Navhome = () => {
   const [userId, setUserId] = useState(null);
@@ -10,7 +11,7 @@ const Navhome = () => {
   const router = useRouter();
 
   const handleProfileClick = () => {
-    const userId = localStorage.getItem("userId");
+    const userId = Cookies.get("userId");
     router.push(`/profile/${userId}`);
   };
 
@@ -20,9 +21,9 @@ const Navhome = () => {
 
   useEffect(() => {
     if (!userId || !token) {
-      const a = localStorage.getItem("userId");
-      const b = localStorage.getItem("token");
-      const c = localStorage.getItem("name");
+      const a = Cookies.get("userId");
+      const b = Cookies.get("token");
+      const c = Cookies.get("name");
       setUserId(a);
       setToken(b);
       setName(c);

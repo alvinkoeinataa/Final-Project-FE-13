@@ -85,8 +85,8 @@ function UpdateProfile() {
 
   useEffect(() => {
     if (!userId || !token) {
-      const a = localStorage.getItem("userId");
-      const b = localStorage.getItem("token");
+      const a = Cookies.get("userId");
+      const b = Cookies.get("token");
       setUserId(a);
       setToken(b);
     }

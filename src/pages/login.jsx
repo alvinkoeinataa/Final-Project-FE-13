@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,15 +41,18 @@ function Login() {
         .then((res) => {
           const token = res.data.token;
           // console.log(token);
-          localStorage.setItem("token", token);
+          // localStorage.setItem("token", token);
+          Cookies.set("token", token);
 
           const name = res.data.user.name;
-          localStorage.setItem("name", name);
+          Cookies.set("name", name);
+          // localStorage.setItem("name", name);
 
           const userId = res.data.user.id;
-          localStorage.setItem("userId", userId);
+          Cookies.set("userId", userId);
+          // localStorage.setItem("userId", userId);
 
-          router.push(`/dash`);
+          router.push(`/`); //  / = index.jsx
         })
         .catch((error) => {
           console.error(error);
@@ -59,8 +63,8 @@ function Login() {
 
   useEffect(() => {
     if (!userId || !token) {
-      const a = localStorage.getItem("userId");
-      const b = localStorage.getItem("token");
+      const a = Cookies.get("userId");
+      const b = Cookies.get("token");
       setUserId(a);
       setToken(b);
     }

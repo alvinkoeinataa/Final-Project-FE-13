@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 
@@ -11,13 +12,15 @@ function Logout() {
     axios
       .get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/logout`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${Cookies.get("token")}`,
           apiKey: process.env.NEXT_PUBLIC_API_KEY,
         },
       })
       .then((res) => {
         // console.log(res);
-        localStorage.clear();
+        Cookies.remove("token");
+        Cookies.remove("userId");
+        Cookies.remove("name");
 
         router.push("/login");
       })
@@ -28,8 +31,8 @@ function Logout() {
 
   useEffect(() => {
     if (!userId || !token) {
-      const a = localStorage.getItem("userId");
-      const b = localStorage.getItem("token");
+      const a = Cookies.get("userId");
+      const b = Cookies.get("token");
 
       setUserId(a);
       setToken(b);
