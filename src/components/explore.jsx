@@ -112,10 +112,6 @@ const Explore = () => {
   return (
     <div className="mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
       <div className="flex flex-col items-center">
-        <div className="w-full md:w-1/2 bg-white  p-4">
-          <Navhome />
-        </div>
-
         <div className="w-full md:w-1/2 items-center bg-white ">
           {/* Daftar Posting */}
           <ul className="grid grid-cols-1">

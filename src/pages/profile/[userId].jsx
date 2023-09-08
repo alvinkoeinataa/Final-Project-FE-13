@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -65,7 +66,7 @@ const ProfilePage = () => {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/my-followers?size=10&page=1`, {
           headers: {
             apiKey: process.env.NEXT_PUBLIC_API_KEY,
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         });
 

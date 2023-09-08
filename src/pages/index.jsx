@@ -5,41 +5,56 @@ import Register from "./register";
 import { useState } from "react";
 import { GetMyFollow } from "@/components/getMyFollow";
 import Explore from "@/components/explore";
+import Navhome from "@/components/navhome";
 
 export default function Home() {
   const [visiblePage, setVisiblePage] = useState("explore");
 
   return (
     <div>
-      <Head>
-        <title>Photogram</title>
-        <link rel="icon" href="/fav.icon.ico"></link>
-      </Head>
+      <Navhome />
 
-      <button
-        onClick={() => {
-          setVisiblePage("explore");
-        }}
-      >
-        Explore
-      </button>
-      <button
-        onClick={() => {
-          setVisiblePage("following");
-        }}
-      >
-        Following
-      </button>
+      <div>
+        <Head>
+          <title>Photogram</title>
+          <link rel="icon" href="/fav.icon.ico"></link>
+        </Head>
 
-      {visiblePage === "explore" ? (
-        <div>
-          <Explore />
+        <div className="mt-4 p-2 mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 items-center">
+          <div className="flex items-center justify-center mb-4">
+            <div>
+              <button
+                onClick={() => {
+                  setVisiblePage("explore");
+                }}
+                className="text-white p-2 rounded bg-blue-400 mr-4"
+              >
+                Explore
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={() => {
+                  setVisiblePage("following");
+                }}
+                className="text-white p-2 rounded bg-blue-400"
+              >
+                Following
+              </button>
+            </div>
+          </div>
+
+          {visiblePage === "explore" ? (
+            <div>
+              <Explore />
+            </div>
+          ) : (
+            <div>
+              <GetMyFollow />
+            </div>
+          )}
         </div>
-      ) : (
-        <div>
-          <GetMyFollow />
-        </div>
-      )}
+      </div>
     </div>
   );
 }
