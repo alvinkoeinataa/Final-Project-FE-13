@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const GetMyFollow = () => {
   const [users, setUsers] = useState([]);
-  const [postLikes, setPostLikes] = useState({}); 
+  const [postLikes, setPostLikes] = useState({});
 
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState(null);
@@ -103,7 +103,7 @@ export const GetMyFollow = () => {
           {/* Daftar Pengguna */}
           <ul className="grid grid-cols-1">
             {users.map((user) => (
-              <li key={user.id} className="flex flex-col items-center border border-black mt-4">
+              <li key={user.id} className="flex flex-col items-center border border-black">
                 <div className="mt-4">
                   {user.user && (
                     <div className="flex items-center">
