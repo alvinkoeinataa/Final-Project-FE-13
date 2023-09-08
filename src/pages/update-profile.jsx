@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
-
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 function UpdateProfile() {
   const [userId, setUserId] = useState(null);
