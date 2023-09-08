@@ -1,16 +1,12 @@
-// middleware utk Autentikasi
-// semua hal biasa nya dicek di middleware terlebih dahulu
-
 import { NextResponse } from "next/server";
 
-// This function can be marked `async` if using `await` inside
 export function middleware(request) {
   let token = request.cookies.get("token");
   let url = request.nextUrl.clone();
 
   if (token) {
     if (url.pathname != "/login" && url.pathname != "/register") {
-      return NextResponse.next(); // proses selanjutnya
+      return NextResponse.next();
     } else {
       url.pathname = "/";
       return NextResponse.redirect(url);
@@ -25,7 +21,6 @@ export function middleware(request) {
   }
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
   matcher: [
     /*

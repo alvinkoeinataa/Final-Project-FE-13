@@ -29,7 +29,7 @@ function UpdateProfile() {
         phoneNumber: data.data.phoneNumber,
         bio: data.data.bio,
         website: data.data.website,
-      }); // mengubah value data ke formik
+      });
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -46,7 +46,6 @@ function UpdateProfile() {
       website: "",
     },
 
-    // ngirim ke backend
     onSubmit: (values) => {
       let data = JSON.stringify({
         name: values.name,
@@ -56,7 +55,7 @@ function UpdateProfile() {
         phoneNumber: values.phoneNumber,
         bio: values.bio,
         website: values.website,
-      }); // data yg diedit masuk ke sini
+      });
 
       let config = {
         method: "post",
@@ -74,10 +73,9 @@ function UpdateProfile() {
         .request(config)
         .then((response) => {
           alert(response.data.message);
-          router.push("/dash");
+          router.push("/");
         })
         .catch((error) => {
-          // alert(error.message);
           alert(error.response.data.message);
         });
     },

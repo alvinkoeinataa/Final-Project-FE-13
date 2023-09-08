@@ -38,7 +38,6 @@ const ProfilePage = () => {
         });
 
         const data = response.data;
-        // console.log("User Posts Data:", data);
         setUserPosts(data.data.posts);
       } catch (error) {
         console.error("Error fetching user posts:", error);
@@ -90,7 +89,6 @@ const ProfilePage = () => {
     return <p>Loading...</p>;
   }
 
-  // console.log(userFollowing);
   return (
     <div className="w-3/4 mx-auto">
       <div className="mt-4 flex flex-col md:flex-row items-center">

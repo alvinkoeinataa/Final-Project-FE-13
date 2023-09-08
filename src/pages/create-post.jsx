@@ -10,7 +10,6 @@ export default function CreatePost() {
   const [userId, setUserId] = useState(null);
   const [caption, setCaption] = useState("");
   const router = useRouter();
-  // console.log(file);
 
   const handleUpload = () => {
     const FormData = require("form-data");
@@ -38,7 +37,7 @@ export default function CreatePost() {
           imageUrl: response.data.url,
           caption: caption,
         });
-        console.log("data =", data);
+
         let config = {
           method: "post",
           maxBodyLength: Infinity,
@@ -54,10 +53,8 @@ export default function CreatePost() {
         await axios
           .request(config)
           .then((res) => {
-            // console.log(res.data);
-
             alert(res.data.message);
-            router.push(`/dash`);
+            router.push(`/`);
           })
           .catch((err) => {
             console.log(err);

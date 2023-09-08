@@ -1,6 +1,4 @@
 import Head from "next/head";
-import Login from "./login";
-import Register from "./register";
 
 import { useState } from "react";
 import { GetMyFollow } from "@/components/getMyFollow";

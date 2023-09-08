@@ -40,19 +40,16 @@ function Login() {
         })
         .then((res) => {
           const token = res.data.token;
-          // console.log(token);
-          // localStorage.setItem("token", token);
+
           Cookies.set("token", token);
 
           const name = res.data.user.name;
           Cookies.set("name", name);
-          // localStorage.setItem("name", name);
 
           const userId = res.data.user.id;
           Cookies.set("userId", userId);
-          // localStorage.setItem("userId", userId);
 
-          router.push(`/`); //  / = index.jsx
+          router.push(`/`);
         })
         .catch((error) => {
           console.error(error);
@@ -131,9 +128,6 @@ function Login() {
             </p>
           </div>
         </div>
-      </div>
-      <div className="text-center text-light mt-8">
-        © All Rights Reserved 2023. Created by <b>Alvin Koeinata</b>.
       </div>
     </>
   );

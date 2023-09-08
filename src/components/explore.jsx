@@ -2,7 +2,6 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import Navhome from "@/components/navhome";
 import Cookies from "js-cookie";
 
 const Explore = () => {
@@ -25,8 +24,7 @@ const Explore = () => {
 
       const data = response.data;
       const postsData = data.data.posts;
-      // console.log("API Response Data:", data);
-      // console.log(data.data.posts);
+
       setTotalPages(data.data.totalPages);
       setPosts((prevPosts) => [...prevPosts, ...postsData]);
     } catch (error) {
@@ -44,7 +42,7 @@ const Explore = () => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/like`,
-        { postId }, // Kirim data postId ke server
+        { postId },
         {
           headers: {
             apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -57,8 +55,6 @@ const Explore = () => {
         ...prevLikes,
         [postId]: prevLikes[postId] + 1,
       }));
-
-      console.log("Post Liked:", response.data);
     } catch (error) {
       console.error("Error liking post:", error);
     }
@@ -68,7 +64,7 @@ const Explore = () => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/unlike`,
-        { postId }, // Kirim data postId ke server
+        { postId },
         {
           headers: {
             apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -77,13 +73,10 @@ const Explore = () => {
         }
       );
 
-      // mengupdate state
       setPostLikes((prevLikes) => ({
         ...prevLikes,
         [postId]: prevLikes[postId] - 1,
       }));
-
-      console.log("Post Unliked:", response.data);
     } catch (error) {
       console.error("Error unliking post:", error);
     }
@@ -101,7 +94,6 @@ const Explore = () => {
   }, []);
 
   useEffect(() => {
-    // Memperbarui jumlah likes awal pada setiap postingan
     const initialLikes = {};
     posts.forEach((post) => {
       initialLikes[post.id] = post.totalLikes;
