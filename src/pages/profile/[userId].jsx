@@ -22,6 +22,7 @@ const ProfilePage = () => {
         });
 
         const data = response.data;
+
         setUserData(data.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -46,7 +47,7 @@ const ProfilePage = () => {
 
     const fetchUserFollowing = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/my-following?size=10&page=1`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/following/${userId}?size=10&page=1`, {
           headers: {
             apiKey: process.env.NEXT_PUBLIC_API_KEY,
             Authorization: `Bearer ${Cookies.get("token")}`,
@@ -62,7 +63,7 @@ const ProfilePage = () => {
 
     const fetchUserFollowers = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/my-followers?size=10&page=1`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/followers/${userId}?size=10&page=1`, {
           headers: {
             apiKey: process.env.NEXT_PUBLIC_API_KEY,
             Authorization: `Bearer ${Cookies.get("token")}`,
