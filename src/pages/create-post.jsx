@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
+import Navhome from "@/components/navhome";
 
 export default function CreatePost() {
   const [file, setFile] = useState("");
@@ -75,29 +76,32 @@ export default function CreatePost() {
   }, [userId, token]);
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-white rounded shadow">
-      <h1 className="text-2xl font-semibold mb-4">Create Post</h1>
+    <>
+      <Navhome />
+      <div className="max-w-md mx-auto p-4 bg-white rounded shadow">
+        <h1 className="text-2xl font-semibold mb-4">Create Post</h1>
 
-      <h1 className="mt-8 mb-2">Choose your image</h1>
-      <input
-        type="file"
-        className="mb-2"
-        value={inputFile}
-        onChange={(e) => {
-          setFile(e.target.files[0]);
-          setInputFile(e.target.value);
-        }}
-      />
+        <h1 className="mt-8 mb-2">Choose your image</h1>
+        <input
+          type="file"
+          className="mb-2"
+          value={inputFile}
+          onChange={(e) => {
+            setFile(e.target.files[0]);
+            setInputFile(e.target.value);
+          }}
+        />
 
-      <div className="mt-8">
-        <label htmlFor="">Caption</label>
+        <div className="mt-8">
+          <label htmlFor="">Caption</label>
+        </div>
+
+        <input type="text" className="mb-2 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter caption" value={caption} onChange={(e) => setCaption(e.target.value)} />
+
+        <button onClick={handleUpload} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+          Upload
+        </button>
       </div>
-
-      <input type="text" className="mb-2 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter caption" value={caption} onChange={(e) => setCaption(e.target.value)} />
-
-      <button onClick={handleUpload} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
-        Upload
-      </button>
-    </div>
+    </>
   );
 }

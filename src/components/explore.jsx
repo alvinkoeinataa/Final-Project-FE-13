@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+import UserPost from "./userPost";
 import Cookies from "js-cookie";
 
 const Explore = () => {
@@ -10,10 +11,10 @@ const Explore = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [postLikes, setPostLikes] = useState({}); // menyimpan dan merubah like
 
-  const [token, setToken] = useState("");
-  const [userId, setUserId] = useState(null);
+  // const [token, setToken] = useState("");
+  // const [userId, setUserId] = useState(null);
 
-  const fetchData = async () => {
+  const fetchData = async (currentPage) => {
     try {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/explore-post?size=10&page=${currentPage}`, {
         headers: {
@@ -33,73 +34,85 @@ const Explore = () => {
   };
 
   const handleLoadMore = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
+    setCurrentPage(currentPage + 1);
   };
 
-  const handleLikePost = async (postId) => {
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/like`,
-        { postId },
-        {
-          headers: {
-            apiKey: process.env.NEXT_PUBLIC_API_KEY,
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-        }
-      );
+  // const handleLikePost = async (postId) => {
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/like`,
+  //       { postId },
+  //       {
+  //         headers: {
+  //           apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  //           Authorization: `Bearer ${Cookies.get("token")}`,
+  //         },
+  //       }
+  //     );
 
-      setPostLikes((prevLikes) => ({
-        ...prevLikes,
-        [postId]: prevLikes[postId] + 1,
-      }));
-    } catch (error) {
-      console.error("Error liking post:", error);
-    }
-  };
+  //     setPostLikes((prevLikes) => ({
+  //       ...prevLikes,
+  //       [postId]: prevLikes[postId] + 1,
+  //     }));
+  //   } catch (error) {
+  //     console.error("Error liking post:", error);
+  //   }
+  // };
 
-  const handleUnlikePost = async (postId) => {
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/unlike`,
-        { postId },
-        {
-          headers: {
-            apiKey: process.env.NEXT_PUBLIC_API_KEY,
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-        }
-      );
+  // const handleUnlikePost = async (postId) => {
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/unlike`,
+  //       { postId },
+  //       {
+  //         headers: {
+  //           apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  //           Authorization: `Bearer ${Cookies.get("token")}`,
+  //         },
+  //       }
+  //     );
 
-      setPostLikes((prevLikes) => ({
-        ...prevLikes,
-        [postId]: prevLikes[postId] - 1,
-      }));
-    } catch (error) {
-      console.error("Error unliking post:", error);
-    }
-  };
+  //     setPostLikes((prevLikes) => ({
+  //       ...prevLikes,
+  //       [postId]: prevLikes[postId] - 1,
+  //     }));
+  //   } catch (error) {
+  //     console.error("Error unliking post:", error);
+  //   }
+  // };
+
+  // const handleComment = async (postId) => {
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/create-comment`,
+  //       { postId },
+  //       {
+  //         headers: {
+  //           apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  //           Authorization: `Bearer ${Cookies.get("token")}`,
+  //         },
+  //         data: data,
+  //       }
+  //     );
+  //     console.log("lala", response);
+
+  //     setComment("");
+  //   } catch (error) {
+  //     console.error("Error liking post:", error);
+  //   }
+  // };
 
   useEffect(() => {
-    if (!userId || !token) {
-      const a = Cookies.get("userId");
-      const b = Cookies.get("token");
+    fetchData(currentPage);
+  }, [currentPage]);
 
-      setUserId(a);
-      setToken(b);
-      fetchData();
-    }
-  }, []);
-
-  useEffect(() => {
-    const initialLikes = {};
-    posts.forEach((post) => {
-      initialLikes[post.id] = post.totalLikes;
-    });
-    setPostLikes(initialLikes);
-  }, [posts]);
+  // useEffect(() => {
+  //   const initialLikes = {};
+  //   posts.forEach((post) => {
+  //     initialLikes[post.id] = post.totalLikes;
+  //   });
+  //   setPostLikes(initialLikes);
+  // }, [posts]);
 
   return (
     <div className="mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
@@ -109,50 +122,14 @@ const Explore = () => {
           <ul className="grid grid-cols-1">
             {posts.map((post, index) => (
               <li key={`${post.id}-${index}`} className="flex flex-col items-center border border-black">
-                <div className="mt-4">
-                  {post.user && (
-                    <div className="flex">
-                      <div>{post.user.profilePictureUrl && <img src={post.user.profilePictureUrl} alt="gambar" className="w-8 h-8 rounded-full mr-2" />}</div>
-                      <div>
-                        <Link href={`/profile/${post.user.id}`}>{post.user.username}</Link>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex items-center justify-center mb-2">
-                    <img src={post.imageUrl} alt="gambar" className="w-full max-h-90" />
-                  </div>
-
-                  {post.user && (
-                    <div className="pl-3">
-                      <button onClick={() => handleLikePost(post.id)} className="bg-blue-500 text-white px-2 py-1 rounded mr-2">
-                        Like
-                      </button>
-                      <button onClick={() => handleUnlikePost(post.id)} className="bg-red-500 text-white px-2 py-1 rounded">
-                        Unlike
-                      </button>
-                    </div>
-                  )}
-
-                  <p className="pl-3">{postLikes[post.id] || post.totalLikes} likes</p>
-                  {post.user && (
-                    <div className="flex flex-col pl-3">
-                      <div className="flex flex-row">
-                        <p className="mr-4 ">{post.user.username}</p>
-                        <p className="mb-6">{post.caption}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                <UserPost post={post} />
               </li>
             ))}
           </ul>
 
-          {currentPage < totalPages && (
-            <button onClick={handleLoadMore} className="bg-blue-500 text-white px-4 py-2 mt-4 rounded w-full">
-              Load More...
-            </button>
-          )}
+          <button onClick={handleLoadMore} className="bg-blue-500 text-white px-4 py-2 mt-4 rounded w-full">
+            Load More...
+          </button>
         </div>
       </div>
     </div>

@@ -29,15 +29,15 @@ function Logout() {
       });
   };
 
-  useEffect(() => {
-    if (!userId || !token) {
-      const a = Cookies.get("userId");
-      const b = Cookies.get("token");
+  // useEffect(() => {
+  //   if (!userId || !token) {
+  //     const a = Cookies.get("userId");
+  //     const b = Cookies.get("token");
 
-      setUserId(a);
-      setToken(b);
-    }
-  }, []);
+  //     setUserId(a);
+  //     setToken(b);
+  //   }
+  // }, []);
 
   return (
     <>

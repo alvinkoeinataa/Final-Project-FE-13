@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
+import Navhome from "@/components/navhome";
 
 function UpdateProfile() {
   const [userId, setUserId] = useState(null);
@@ -95,33 +96,36 @@ function UpdateProfile() {
   }, [userId, token]);
 
   return (
-    <div className="mt-8">
-      <h1 className="text-2xl text-center mb-8 text-bold">Update Profile</h1>
-      <form onSubmit={formik.handleSubmit} className="max-w-md mx-auto space-y-4">
-        {Object.keys(formik.initialValues).map((value, index) => (
-          <div className="flex items-center mb-4" key={index}>
-            <label htmlFor={value} className="block font-semibold w-1/3">
-              {value.charAt(0).toUpperCase() + value.slice(1)}:
-            </label>
-            <input
-              className="w-2/3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 px-3 py-2"
-              id={value}
-              name={value}
-              type={value === "password" ? "password" : "text"}
-              placeholder={`Enter your ${value}`}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values[value]}
-            />
-            {formik.touched[value] && formik.errors[value] ? <div className="text-red-500 mt-1 text-sm">{formik.errors[value]}</div> : null}
-          </div>
-        ))}
+    <>
+      <Navhome />
+      <div className="mt-8">
+        <h1 className="text-2xl text-center mb-8 text-bold">Update Profile</h1>
+        <form onSubmit={formik.handleSubmit} className="max-w-md mx-auto space-y-4">
+          {Object.keys(formik.initialValues).map((value, index) => (
+            <div className="flex items-center mb-4" key={index}>
+              <label htmlFor={value} className="block font-semibold w-1/3">
+                {value.charAt(0).toUpperCase() + value.slice(1)}:
+              </label>
+              <input
+                className="w-2/3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 px-3 py-2"
+                id={value}
+                name={value}
+                type={value === "password" ? "password" : "text"}
+                placeholder={`Enter your ${value}`}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values[value]}
+              />
+              {formik.touched[value] && formik.errors[value] ? <div className="text-red-500 mt-1 text-sm">{formik.errors[value]}</div> : null}
+            </div>
+          ))}
 
-        <button type="submit" className="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-white font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center">
-          Update
-        </button>
-      </form>
-    </div>
+          <button type="submit" className="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-white font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center">
+            Update
+          </button>
+        </form>
+      </div>
+    </>
   );
 }
 
