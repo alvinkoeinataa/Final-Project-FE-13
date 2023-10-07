@@ -4,15 +4,19 @@ import axios from "axios";
 
 import Cookies from "js-cookie";
 import UserPost from "@/components/userPost";
+import { useRouter } from "next/router";
+import Navhome from "@/components/navhome";
 
-const Explore = () => {
+const Modal = () => {
   const [post, setPost] = useState([]);
   const [user, setuser] = useState({});
   const [comment, setComment] = useState([]);
+  const router = useRouter();
+  const { id } = router.query;
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/post/4f9b404e-7a99-4ae5-8572-872dfbc39f90`, {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/post/${id}`, {
         headers: {
           apiKey: process.env.NEXT_PUBLIC_API_KEY,
           Authorization: `Bearer ${Cookies.get("token")}`,
@@ -34,8 +38,9 @@ const Explore = () => {
 
   return (
     <div>
+      <Navhome />
       {/* <h1>{post.userId}</h1> */}
-      <div>
+      <div className="w-1/4 h-1/4">
         <UserPost post={post} />
       </div>
 
@@ -54,4 +59,4 @@ const Explore = () => {
   );
 };
 
-export default Explore;
+export default Modal;

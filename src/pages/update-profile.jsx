@@ -11,6 +11,9 @@ function UpdateProfile() {
   const [userData, setUserData] = useState(null);
   const router = useRouter();
 
+  const [file, setFile] = useState("");
+  const [inputFile, setInputFile] = useState("");
+
   const fetchUserData = async () => {
     try {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/user/${userId}`, {
@@ -52,7 +55,7 @@ function UpdateProfile() {
         name: values.name,
         username: values.username,
         email: values.email,
-        profilePictureUrl: values.profilePictureUrl,
+        profilePictureUrl: inputFile,
         phoneNumber: values.phoneNumber,
         bio: values.bio,
         website: values.website,
@@ -120,6 +123,17 @@ function UpdateProfile() {
             </div>
           ))}
 
+          <img src={formik.inputFile} alt="" />
+
+          <input
+            type="file"
+            className="mb-2"
+            value={inputFile}
+            onChange={(e) => {
+              setFile(e.target.files[0]);
+              setInputFile(e.target.value);
+            }}
+          />
           <button type="submit" className="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-white font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center">
             Update
           </button>

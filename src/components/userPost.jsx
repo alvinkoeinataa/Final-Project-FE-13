@@ -8,11 +8,6 @@ const UserPost = ({ post }) => {
   const [postLikes, setPostLikes] = useState(0); // menyimpan dan merubah like
   const [liked, setLiked] = useState(false); // menyimpan dan merubah like
 
-  useEffect(() => {
-    setLiked(post.isLike);
-    setPostLikes(post.totalLikes);
-  }, [post]);
-
   const handleComment = async (postId) => {
     try {
       const response = await axios.post(
@@ -72,6 +67,11 @@ const UserPost = ({ post }) => {
       console.error("Error unliking post:", error);
     }
   };
+
+  useEffect(() => {
+    setLiked(post.isLike);
+    setPostLikes(post.totalLikes);
+  }, [post]);
 
   return (
     <div className="mt-4">

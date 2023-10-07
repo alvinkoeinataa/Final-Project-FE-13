@@ -5,7 +5,6 @@ import Link from "next/link";
 
 const MyFollow = () => {
   const [users, setUsers] = useState([]);
-
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState(null);
 

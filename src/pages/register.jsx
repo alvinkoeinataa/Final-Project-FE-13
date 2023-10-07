@@ -4,9 +4,32 @@ import axios from "axios";
 
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import AttachImage from "@/components/attachImage";
 
 function Register() {
   const router = useRouter();
+  const [file, setFile] = useState("");
+  const [inputFile, setInputFile] = useState("");
+  const [token, setToken] = useState("");
+  const [userId, setUserId] = useState(null);
+
+  const FormData = require("form-data");
+
+  let data = new FormData();
+  data.append("image", file);
+
+  let config = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/upload-image`,
+    headers: {
+      apiKey: process.env.NEXT_PUBLIC_API_KEY,
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+    data: data,
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -17,7 +40,7 @@ function Register() {
       passwordRepeat: "",
       phoneNumber: "",
       bio: "",
-      webite: "",
+      website: "",
     },
     validationSchema: Yup.object({
       name: Yup.string().min(5, "Must be 5 characters or more").max(15, "Must be less than 15 characters").required("Required"),
@@ -52,12 +75,13 @@ function Register() {
           password: values.password,
           passwordRepeat: values.passwordRepeat,
           phoneNumber: values.phoneNumber,
+          profilePictureUrl: inputFile,
           bio: values.bio,
           website: values.website,
         },
       })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
 
           alert(res.data.message);
           if (res.data.code === "200") {
@@ -96,6 +120,15 @@ function Register() {
               </div>
             ))}
 
+            <input
+              type="file"
+              className="mb-2"
+              value={inputFile}
+              onChange={(e) => {
+                setFile(e.target.files[0]);
+                setInputFile(e.target.value);
+              }}
+            />
             <button className="mt-3 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" type="submit" value="Register">
               Register
             </button>

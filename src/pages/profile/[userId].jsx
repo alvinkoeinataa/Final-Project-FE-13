@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Navhome from "@/components/navhome";
+import Link from "next/link";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -12,6 +13,7 @@ const ProfilePage = () => {
   const [userFollowing, setUserFollowing] = useState({});
   const [userFollowers, setUserFollowers] = useState({});
   // const [isFollow, setIsFollow] = useState()
+  const [totalPost, setTotalPost] = useState({});
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -24,7 +26,6 @@ const ProfilePage = () => {
         });
 
         const data = response.data;
-
         setUserData(data.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -42,6 +43,8 @@ const ProfilePage = () => {
 
         const data = response.data;
         setUserPosts(data.data.posts);
+        console.log(data.data.posts);
+        setTotalPost(data.data);
       } catch (error) {
         console.error("Error fetching user posts:", error);
       }
@@ -118,11 +121,14 @@ const ProfilePage = () => {
           </div>
         </div>
 
+        <h1>{totalPost.totalItems} posts</h1>
         <h2 className="mt-8 text-2xl font-semibold">User Posts</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4">
           {userPosts.map((post) => (
             <div key={post.id}>
-              <img className="w-full h-40 object-cover rounded" src={post.imageUrl} alt="Post" />
+              <Link href={`/modal/${post.id}`}>
+                <img className="w-full h-40 object-cover rounded" src={post.imageUrl} alt="Post" />
+              </Link>
             </div>
           ))}
         </div>
