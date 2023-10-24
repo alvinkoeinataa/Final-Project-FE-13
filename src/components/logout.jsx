@@ -41,7 +41,7 @@ function Logout() {
 
   return (
     <>
-      <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded w-32">
+      <button onClick={handleLogout} className="bg-green-600 text-white px-6 py-2 rounded w-32">
         Log Out
       </button>
     </>

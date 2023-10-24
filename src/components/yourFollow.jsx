@@ -44,15 +44,16 @@ function YourFollow() {
   }, [userId, token]);
 
   return (
-    <div>
-      <h1>
+    <div className="md:col-span-1 hidden md:block fixed right-20">
+      <div>
+        <h1 className="flex text-lg justify-center">Your Following</h1>
         {users.map((item, index) => (
           <div key={index} className="flex items-center">
-            <img src={item.profilePictureUrl} alt="" className="w-10 h-10" />
-            <Link href={`/profile/${item.id}`}>{item.username}</Link>
+            <img src={item.profilePictureUrl} alt="" className="w-10 h-10 mr-4 rounded-full m-1" />
+            <Link href={`/profile/${item.id}`}>{item.username} </Link>
           </div>
         ))}
-      </h1>
+      </div>
     </div>
   );
 }

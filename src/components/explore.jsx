@@ -5,15 +5,15 @@ import axios from "axios";
 import UserPost from "./userPost";
 import Cookies from "js-cookie";
 import YourFollow from "./yourFollow";
+import Navhome from "./navhome";
 
 const Explore = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [postLikes, setPostLikes] = useState({}); // menyimpan dan merubah like
+  const [postLikes, setPostLikes] = useState({});
 
-  // const [token, setToken] = useState("");
-  // const [userId, setUserId] = useState(null);
+  const blockedUserIds = ["a54c59e7-a1b6-4ac4-ae7b-9885a98ed869", "5b7a6783-2071-4e9f-9b8e-8e7fc4a981d4"];
 
   const fetchData = async (currentPage) => {
     try {
@@ -38,102 +38,36 @@ const Explore = () => {
     setCurrentPage(currentPage + 1);
   };
 
-  // const handleLikePost = async (postId) => {
-  //   try {
-  //     const response = await axios.post(
-  //       `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/like`,
-  //       { postId },
-  //       {
-  //         headers: {
-  //           apiKey: process.env.NEXT_PUBLIC_API_KEY,
-  //           Authorization: `Bearer ${Cookies.get("token")}`,
-  //         },
-  //       }
-  //     );
-
-  //     setPostLikes((prevLikes) => ({
-  //       ...prevLikes,
-  //       [postId]: prevLikes[postId] + 1,
-  //     }));
-  //   } catch (error) {
-  //     console.error("Error liking post:", error);
-  //   }
-  // };
-
-  // const handleUnlikePost = async (postId) => {
-  //   try {
-  //     const response = await axios.post(
-  //       `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/unlike`,
-  //       { postId },
-  //       {
-  //         headers: {
-  //           apiKey: process.env.NEXT_PUBLIC_API_KEY,
-  //           Authorization: `Bearer ${Cookies.get("token")}`,
-  //         },
-  //       }
-  //     );
-
-  //     setPostLikes((prevLikes) => ({
-  //       ...prevLikes,
-  //       [postId]: prevLikes[postId] - 1,
-  //     }));
-  //   } catch (error) {
-  //     console.error("Error unliking post:", error);
-  //   }
-  // };
-
-  // const handleComment = async (postId) => {
-  //   try {
-  //     const response = await axios.post(
-  //       `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/create-comment`,
-  //       { postId },
-  //       {
-  //         headers: {
-  //           apiKey: process.env.NEXT_PUBLIC_API_KEY,
-  //           Authorization: `Bearer ${Cookies.get("token")}`,
-  //         },
-  //         data: data,
-  //       }
-  //     );
-  //     console.log("lala", response);
-
-  //     setComment("");
-  //   } catch (error) {
-  //     console.error("Error liking post:", error);
-  //   }
-  // };
+  const filterBlockedUsers = (posts) => {
+    const filteredPosts = posts.filter((post) => !blockedUserIds.includes(post.userId));
+    return filteredPosts;
+  };
 
   useEffect(() => {
     fetchData(currentPage);
   }, [currentPage]);
 
-  // useEffect(() => {
-  //   const initialLikes = {};
-  //   posts.forEach((post) => {
-  //     initialLikes[post.id] = post.totalLikes;
-  //   });
-  //   setPostLikes(initialLikes);
-  // }, [posts]);
-
   return (
-    <div className="mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-      <div className="flex flex-col items-center">
-        <h1>Your following</h1>
-        <YourFollow />
-        <div className="w-full md:w-1/2 items-center bg-white ">
-          {/* Daftar Posting */}
+    <div className="mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-4">
+        <div className="md:col-span-1 hidden md:block">
+          <Navhome />
+        </div>
+
+        <div className="w-full md:col-span-2 items-center bg-white">
           <ul className="grid grid-cols-1">
-            {posts.map((post, index) => (
-              <li key={`${post.id}-${index}`} className="flex flex-col items-center border border-black">
+            {filterBlockedUsers(posts).map((post, index) => (
+              <li key={`${post.id}-${index}`} className="flex flex-col border border-black">
                 <UserPost post={post} />
               </li>
             ))}
           </ul>
-
           <button onClick={handleLoadMore} className="bg-blue-500 text-white px-4 py-2 mt-4 rounded w-full">
             Load More...
           </button>
         </div>
+
+        <YourFollow />
       </div>
     </div>
   );

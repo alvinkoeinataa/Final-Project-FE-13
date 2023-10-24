@@ -4,16 +4,22 @@ import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import Navhome from "@/components/navhome";
 
-export default function CreatePost() {
-  const [file, setFile] = useState("");
-  const [inputFile, setInputFile] = useState("");
+export default function UpdatePost() {
+  const [file, setFile] = useState(null);
+  const [userPosts, setUserPosts] = useState([]);
+  const router = useRouter();
+  const { id } = router.query;
+
+  const [imageUrl, setImageUrl] = useState("");
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState(null);
   const [caption, setCaption] = useState("");
-  const router = useRouter();
 
   const handleUpload = () => {
-    const FormData = require("form-data");
+    if (!file) {
+      alert("Please select a file.");
+      return;
+    }
 
     let data = new FormData();
     data.append("image", file);
@@ -26,7 +32,6 @@ export default function CreatePost() {
       headers: {
         apiKey: process.env.NEXT_PUBLIC_API_KEY,
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
       },
       data: data,
     };
@@ -42,7 +47,7 @@ export default function CreatePost() {
         let config = {
           method: "post",
           maxBodyLength: Infinity,
-          url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/create-post`,
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/update-post/${id}`,
           headers: {
             apiKey: process.env.NEXT_PUBLIC_API_KEY,
             Authorization: `Bearer ${token}`,
@@ -51,7 +56,7 @@ export default function CreatePost() {
           data: data,
         };
 
-        await axios
+        axios
           .request(config)
           .then((res) => {
             alert(res.data.message);
@@ -66,44 +71,64 @@ export default function CreatePost() {
       });
   };
 
-  useEffect(() => {
-    if (!userId || !token) {
-      const a = Cookies.get("userId");
-      const b = Cookies.get("token");
-      setUserId(a);
-      setToken(b);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/post/${id}`, {
+        headers: {
+          apiKey: process.env.NEXT_PUBLIC_API_KEY,
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      });
+
+      setCaption(response.data.data.caption);
+      setUserId(Cookies.get("userId"));
+      setToken(Cookies.get("token"));
+      setImageUrl(response.data.data.imageUrl);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-  }, [userId, token]);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [id]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4">
+    <>
       <div className="p-4 md:col-span-1 hidden md:block pt-20">
         <Navhome />
       </div>
-      <div className="max-w-md mx-auto p-4 bg-white rounded shadow bg-blue-100 mt-8 md:col-span-3">
-        <h1 className="text-2xl font-semibold mb-4">Create Post</h1>
+      <div className="max-w-md mx-auto p-4 bg-white rounded shadow mt-8">
+        <h1 className="text-2xl font-semibold mb-4">Update Post</h1>
 
-        <h1 className="mt-8 mb-2">Choose your image</h1>
+        <img className="w-full h-40 object-cover rounded" src={imageUrl} alt="Post" />
         <input
           type="file"
-          className="mb-2"
-          value={inputFile}
+          className="mb-2 mx-auto p-4 flex items-center justify-center"
           onChange={(e) => {
-            setFile(e.target.files[0]);
-            setInputFile(e.target.value);
+            const selectedFile = e.target.files[0];
+            if (selectedFile) {
+              setFile(selectedFile);
+              setImageUrl(URL.createObjectURL(selectedFile));
+            } else {
+              setFile(null);
+            }
           }}
         />
 
         <div className="mt-8">
           <label htmlFor="">Caption</label>
         </div>
-
         <input type="text" className="mb-2 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter caption" value={caption} onChange={(e) => setCaption(e.target.value)} />
 
         <button onClick={handleUpload} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
           Upload
         </button>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4">
+          <div></div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

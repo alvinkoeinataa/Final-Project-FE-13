@@ -12,8 +12,11 @@ const ProfilePage = () => {
   const [userPosts, setUserPosts] = useState([]);
   const [userFollowing, setUserFollowing] = useState({});
   const [userFollowers, setUserFollowers] = useState({});
-  // const [isFollow, setIsFollow] = useState()
+
+  const [isFollow, setIsFollow] = useState(false);
   const [totalPost, setTotalPost] = useState({});
+
+  const userIds = Cookies.get("userId");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -43,8 +46,8 @@ const ProfilePage = () => {
 
         const data = response.data;
         setUserPosts(data.data.posts);
-        console.log(data.data.posts);
         setTotalPost(data.data);
+        // console.log(data.data.posts);
       } catch (error) {
         console.error("Error fetching user posts:", error);
       }
@@ -95,45 +98,117 @@ const ProfilePage = () => {
     return <p>Loading...</p>;
   }
 
+  const followUser = async (userId) => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/follow/`,
+        { userIdFollow: userId },
+        {
+          headers: {
+            apiKey: process.env.NEXT_PUBLIC_API_KEY,
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+        }
+      );
+
+      setIsFollow(true);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const unfollowUser = async (userId) => {
+    try {
+      const response = await axios.request({
+        method: "delete",
+        maxBodyLength: Infinity,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/unfollow/${userId}`,
+        headers: {
+          apiKey: process.env.NEXT_PUBLIC_API_KEY,
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+        data: "",
+      });
+
+      setIsFollow(false);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  // async function followUser() {
+  //   setIsFollow(true);
+  // }
+
+  // async function unfollowUser() {
+  //   setIsFollow(false);
+  // }
   return (
-    <>
-      <Navhome />
-      <div className="w-3/4 mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-4">
+      <div className="p-4 md:col-span-1 hidden md:block pt-20">
+        <Navhome />
+      </div>
+
+      <div className="w-3/4 mx-auto md:col-span-3">
         <div className="mt-4 flex flex-col md:flex-row items-center">
           <img className="w-20 h-20 rounded-full mb-4 md:mb-0" src={userData.profilePictureUrl} alt="Profile" />
 
           <div className="md:ml-4">
             <p className="text-xl font-semibold">{userData.username}</p>
             <p className="text-gray-600 mb-1">{userData.name}</p>
-            <p className="text-gray-600 mb-1">{userData.bio}</p>
+
             <p className="text-gray-600">{userData.website}</p>
           </div>
 
           <div className="flex mt-4 md:mt-0 md:ml-auto">
             <div className="mr-4">
-              <p className="font-semibold">{userFollowing?.totalItems || "0"}</p>
+              <p className="font-semibold">{userFollowing?.totalItems || "0"} </p>
               <p className="text-gray-600">Following</p>
             </div>
-            <div>
+            <div className="mr-4">
               <p className="font-semibold">{userFollowers?.totalItems || "0"}</p>
               <p className="text-gray-600">Followers</p>
+            </div>
+
+            <div>
+              <p className="font-semibold">{totalPost.totalItems}</p>
+              <p className="text-gray-600">posts</p>
             </div>
           </div>
         </div>
 
-        <h1>{totalPost.totalItems} posts</h1>
+        {userIds !== userId ? (
+          !isFollow ? (
+            <>
+              <button className="p-2 bg-black text-white" onClick={() => followUser(userId)}>
+                Follow
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="p-2 bg-blue-400" onClick={() => unfollowUser(userId)}>
+                Unfollow
+              </button>
+            </>
+          )
+        ) : (
+          ""
+        )}
+
         <h2 className="mt-8 text-2xl font-semibold">User Posts</h2>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4">
           {userPosts.map((post) => (
             <div key={post.id}>
               <Link href={`/modal/${post.id}`}>
                 <img className="w-full h-40 object-cover rounded" src={post.imageUrl} alt="Post" />
+                {/* {post.totalLikes} */}
               </Link>
             </div>
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

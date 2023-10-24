@@ -8,11 +8,12 @@ import Navhome from "@/components/navhome";
 function UpdateProfile() {
   const [userId, setUserId] = useState(null);
   const [token, setToken] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   const [userData, setUserData] = useState(null);
   const router = useRouter();
 
   const [file, setFile] = useState("");
-  const [inputFile, setInputFile] = useState("");
+  // const [inputFile, setInputFile] = useState("");
 
   const fetchUserData = async () => {
     try {
@@ -34,6 +35,7 @@ function UpdateProfile() {
         bio: data.data.bio,
         website: data.data.website,
       });
+      setImageUrl(data.data.profilePictureUrl);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -45,43 +47,68 @@ function UpdateProfile() {
       username: "",
       email: "",
       phoneNumber: "",
-      profilePictureUrl: "",
       bio: "",
       website: "",
     },
 
-    onSubmit: (values) => {
-      let data = JSON.stringify({
-        name: values.name,
-        username: values.username,
-        email: values.email,
-        profilePictureUrl: inputFile,
-        phoneNumber: values.phoneNumber,
-        bio: values.bio,
-        website: values.website,
-      });
+    onSubmit: async (values) => {
+      try {
+        // upload image (if user select new image)
+        let newImageUrl = "";
+        if (file) {
+          let data = new FormData();
+          data.append("image", file);
 
-      let config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/update-profile`,
-        headers: {
-          apiKey: process.env.NEXT_PUBLIC_API_KEY,
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        data: data,
-      };
+          let config = {
+            method: "post",
+            maxBodyLength: Infinity,
+            url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/upload-image`,
+            headers: {
+              apiKey: process.env.NEXT_PUBLIC_API_KEY,
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+            data: data,
+          };
+          let resUpload = await axios.request(config);
+          newImageUrl = resUpload.data.url;
+        }
 
-      axios
-        .request(config)
-        .then((response) => {
-          alert(response.data.message);
-          router.push("/");
-        })
-        .catch((error) => {
-          alert(error.response.data.message);
+        // update data
+        let data = JSON.stringify({
+          name: values.name,
+          username: values.username,
+          email: values.email,
+          profilePictureUrl: newImageUrl.length > 0 ? newImageUrl : imageUrl,
+          phoneNumber: values.phoneNumber,
+          bio: values.bio,
+          website: values.website,
         });
+
+        let config = {
+          method: "post",
+          maxBodyLength: Infinity,
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/update-profile`,
+          headers: {
+            apiKey: process.env.NEXT_PUBLIC_API_KEY,
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          data: data,
+        };
+
+        axios
+          .request(config)
+          .then((response) => {
+            alert(response.data.message);
+            router.push("/");
+          })
+          .catch((error) => {
+            alert(error.response.data.message);
+          });
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 
@@ -99,10 +126,28 @@ function UpdateProfile() {
   }, [userId, token]);
 
   return (
-    <>
-      <Navhome />
-      <div className="mt-8">
-        <h1 className="text-2xl text-center mb-8 text-bold">Update Profile</h1>
+    <div className="grid grid-cols-1 md:grid-cols-4">
+      <div className="p-4 md:col-span-1 hidden md:block pt-20">
+        <Navhome />
+      </div>
+
+      <div className="mt-8 bg-blue-100 md:col-span-3">
+        {imageUrl && (
+          <div className="flex items-center justify-center">
+            <img src={imageUrl} alt="Profile" className="w-48 h-48 object-cover rounded-full" />
+          </div>
+        )}
+        <input
+          type="file"
+          className="mb-2 mx-auto p-4 flex items-center justify-center"
+          // value={inputFile}
+          onChange={(e) => {
+            setFile(e.target.files[0]);
+            setImageUrl(URL.createObjectURL(e.target.files[0]));
+            // setInputFile(e.target.value);
+          }}
+        />
+
         <form onSubmit={formik.handleSubmit} className="max-w-md mx-auto space-y-4">
           {Object.keys(formik.initialValues).map((value, index) => (
             <div className="flex items-center mb-4" key={index}>
@@ -123,23 +168,12 @@ function UpdateProfile() {
             </div>
           ))}
 
-          <img src={formik.inputFile} alt="" />
-
-          <input
-            type="file"
-            className="mb-2"
-            value={inputFile}
-            onChange={(e) => {
-              setFile(e.target.files[0]);
-              setInputFile(e.target.value);
-            }}
-          />
           <button type="submit" className="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-white font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center">
             Update
           </button>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 

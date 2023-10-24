@@ -10,7 +10,7 @@ export default function Home() {
 
   return (
     <div>
-      <Navhome />
+      {/* <Navhome /> */}
 
       <div>
         <Head>
@@ -18,7 +18,7 @@ export default function Home() {
           <link rel="icon" href="/fav.icon.ico"></link>
         </Head>
 
-        <div className="mt-4 p-2 mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 items-center">
+        <div className="mt-4 p-2 mx-auto   items-center">
           <div className="flex items-center justify-center mb-4">
             <div>
               <button

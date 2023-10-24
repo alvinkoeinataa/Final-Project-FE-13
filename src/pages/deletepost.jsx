@@ -3,7 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 
-function YourFollow() {
+function Delete() {
   const [users, setUsers] = useState([]);
   const [postLikes, setPostLikes] = useState({});
 
@@ -13,7 +13,7 @@ function YourFollow() {
   const deletePost = () => {
     axios({
       method: "delete",
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/delete-post/e4143288-8047-4890-99d7-59a216e2d426`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/delete-post/${postId}`,
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
         apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -22,6 +22,7 @@ function YourFollow() {
       .then((response) => {
         console.log(response);
         // setUsers(response.data.data.users);
+        alert(response.data.message);
       })
       .catch((error) => {
         console.log(error);
@@ -57,4 +58,4 @@ function YourFollow() {
   );
 }
 
-export default YourFollow;
+export default Delete;

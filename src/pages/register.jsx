@@ -1,3 +1,5 @@
+//
+
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -5,30 +7,15 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import AttachImage from "@/components/attachImage";
+import { Photogram } from "@/components/photogram";
 
 function Register() {
   const router = useRouter();
-  const [file, setFile] = useState("");
   const [inputFile, setInputFile] = useState("");
-  const [token, setToken] = useState("");
-  const [userId, setUserId] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const FormData = require("form-data");
-
-  let data = new FormData();
-  data.append("image", file);
-
-  let config = {
-    method: "post",
-    maxBodyLength: Infinity,
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/upload-image`,
-    headers: {
-      apiKey: process.env.NEXT_PUBLIC_API_KEY,
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "multipart/form-data",
-    },
-    data: data,
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
   };
 
   const formik = useFormik({
@@ -94,59 +81,64 @@ function Register() {
         });
     },
   });
-
   return (
-    <>
-      <div className="flex justify-center items-center h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-        <div className="bg-white p-8 rounded shadow-md w-96">
-          <h5 className="text-center text-xl font-medium mb-2">Register Account</h5>
-          <form onSubmit={formik.handleSubmit}>
-            {Object.keys(formik.initialValues).map((value, index) => (
-              <div className="mb-2" key={index}>
-                <label htmlFor={value} className="block font-semibold">
-                  {value.charAt(0).toUpperCase() + value.slice(1)}:
+    <div>
+      <div className="h-screen md:flex">
+        <Photogram />
+
+        <div className="flex justify-center items-center w-full sm:w-full bg-green-400">
+          <div className="bg-white p-8 rounded w-3/4 md:w-1/2">
+            <h5 className="text-center text-xl font-medium mb-2">Register Account</h5>
+            <form onSubmit={formik.handleSubmit}>
+              {Object.keys(formik.initialValues).map((value, index) => (
+                <div className="mb-2 " key={index}>
+                  <div className="flex flex-row">
+                    <label htmlFor={value} className="block font-semibold mr-4">
+                      {value.charAt(0).toUpperCase() + value.slice(1)}:
+                    </label>
+
+                    {formik.touched[value] && formik.errors[value] ? <div className="text-red-500">{formik.errors[value]}</div> : null}
+                  </div>
+
+                  <input
+                    className="w-full border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id={value}
+                    name={value}
+                    type={(value === "password" && showPassword) || (value === "passwordRepeat" && showPassword) ? "password" : "text"}
+                    placeholder={`Enter your ${value}`}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values[value]}
+                  />
+                </div>
+              ))}
+
+              <div className="mt-2">
+                <label className="inline-flex items-center">
+                  <input type="checkbox" className="form-checkbox text-blue-500" onChange={togglePassword} />
+                  <span className="ml-2">Show Password</span>
                 </label>
-                <input
-                  className="w-full  border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  id={value}
-                  name={value}
-                  type={value === "password" || value === "passwordRepeat" ? "password" : "text"}
-                  placeholder={`Enter your ${value}`}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values[value]}
-                />
-                {formik.touched[value] && formik.errors[value] ? <div className="text-red-500 mt-1">{formik.errors[value]}</div> : null}
               </div>
-            ))}
 
-            <input
-              type="file"
-              className="mb-2"
-              value={inputFile}
-              onChange={(e) => {
-                setFile(e.target.files[0]);
-                setInputFile(e.target.value);
-              }}
-            />
-            <button className="mt-3 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" type="submit" value="Register">
-              Register
-            </button>
-          </form>
+              <button className="mt-3 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" type="submit" value="Register">
+                Register
+              </button>
+            </form>
 
-          <div>
-            <p>
-              Already have an account?{" "}
-              <span>
-                <Link href="/login" className="text-blue-600">
-                  Login
-                </Link>
-              </span>
-            </p>
+            <div>
+              <p>
+                Already have an account?{" "}
+                <span>
+                  <Link href="/login" className="text-blue-600">
+                    Login
+                  </Link>
+                </span>
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
