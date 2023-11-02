@@ -5,6 +5,7 @@ import Link from "next/link";
 import UserPost from "./userPost";
 import YourFollow from "./yourFollow";
 import Navhome from "./navhome";
+import Bottomnav from "./bottomnav";
 
 export const GetMyFollow = () => {
   const [users, setUsers] = useState([]);
@@ -134,6 +135,7 @@ export const GetMyFollow = () => {
           </button>
         </div>
 
+        <Bottomnav />
         <YourFollow />
       </div>
     </div>
