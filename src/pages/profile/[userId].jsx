@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Navhome from "@/components/navhome";
-import Modal from "@/components/Modal";
+import Modal from "@/components/modal";
 import Link from "next/link";
 import { Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
