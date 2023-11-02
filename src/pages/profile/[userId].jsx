@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Navhome from "@/components/navhome";
-import Modal from "@/components/modal";
+
 import Link from "next/link";
 import { Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Bottomnav from "@/components/bottomnav";
+import Modal from "@/components/modal";
 
 const ProfilePage = () => {
   const router = useRouter();

@@ -41,55 +41,6 @@ export const GetMyFollow = () => {
       });
   };
 
-  const handleLikePost = async (userId) => {
-    console.log("Mengirim permintaan like dengan userId:", userId);
-    // Mengubah nama parameter dan fungsi
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/like`,
-        { userId },
-        {
-          headers: {
-            apiKey: process.env.NEXT_PUBLIC_API_KEY,
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-        }
-      );
-
-      setPostLikes((prevLikes) => ({
-        ...prevLikes,
-        [userId]: prevLikes[userId] + 1,
-      }));
-    } catch (error) {
-      console.error("Error liking post:", error);
-    }
-  };
-
-  const handleUnlikePost = async (userId) => {
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/unlike`,
-        { userId },
-        {
-          headers: {
-            apiKey: process.env.NEXT_PUBLIC_API_KEY,
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-        }
-      );
-
-      // Mengupdate state
-      setPostLikes((prevLikes) => ({
-        ...prevLikes,
-        [userId]: prevLikes[userId] - 1,
-      }));
-
-      console.log("Post Unliked:", response.data);
-    } catch (error) {
-      console.error("Error unliking post:", error);
-    }
-  };
-
   const handleLoadMore = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
