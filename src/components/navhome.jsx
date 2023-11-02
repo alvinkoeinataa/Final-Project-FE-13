@@ -38,7 +38,7 @@ const Navhome = () => {
   }, [userId, token]);
 
   return (
-    <div className="flex flex-col left-20 pl-6">
+    <div className="flex flex-col left-20 pl-10">
       <div className="px-2 py-2 rounded text-bold text-xl">
         <Link href={"/"}> PHOTOGRAM</Link>
       </div>
