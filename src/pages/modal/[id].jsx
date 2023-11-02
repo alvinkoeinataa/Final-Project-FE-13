@@ -9,17 +9,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const Modal = () => {
-  const [post, setPost] = useState(null);
+  const [post, setPost] = useState("");
   const [user, setUser] = useState(null);
   const [comment, setComment] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { id } = router.query;
-  console.log(post);
-
   const userId = Cookies.get("userId");
 
+  const [postModal, setPostModal] = useState([]);
+  const [userPosts, setUserPosts] = useState([]);
+
+  // console.log(post);
+  console.log(postModal);
+  // console.log(userPosts);
+  // console.log(post);
+
+  // Fetch user posts only when `id` changes
+
   useEffect(() => {
+    // Fetch data for the current post
     const fetchData = async () => {
       try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/post/${id}`, {
@@ -29,13 +38,27 @@ const Modal = () => {
           },
         });
 
-        // response.data.data.totalLikes = post.totalLikes;
-        // response.data.data.isLike = post.dataisLike;
-
         setPost(response.data.data);
         setUser(response.data.data.user);
         setComment(response.data.data.comments);
         setLoading(false);
+
+        // Find the matching post in userPosts
+        const matchingPost = userPosts.find((userPost) => userPost.id === id);
+
+        if (matchingPost) {
+          // If a matching post is found, extract isLike and totalLikes
+          const { isLike, totalLikes } = matchingPost;
+
+          // Create a copy of the response data and add isLike and totalLikes
+          const updatedPostModal = {
+            ...response.data,
+            isLike,
+            totalLikes,
+          };
+
+          setPostModal(updatedPostModal);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
@@ -45,7 +68,28 @@ const Modal = () => {
     if (id) {
       fetchData();
     }
-  }, [id]);
+  }, [id, userPosts]);
+
+  const fetchUserPosts = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/users-post/${userId}?size=10&page=1`, {
+        headers: {
+          apiKey: process.env.NEXT_PUBLIC_API_KEY,
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      });
+
+      const data = response.data;
+      setUserPosts(data.data.posts);
+    } catch (error) {
+      console.error("Error fetching user posts:", error);
+    }
+  };
+
+  // Fetch userPosts only when the component initially mounts
+  useEffect(() => {
+    fetchUserPosts();
+  }, []);
 
   const deletePost = () => {
     axios({
@@ -76,19 +120,19 @@ const Modal = () => {
       <div className="p-4 md:col-span-1 hidden md:block pt-20">
         <Navhome />
       </div>
+      {/* {userPosts.map((item) => item.caption)} */}
+
       <div className="flex flex-col items-center">
         <div className="w-1/4 h-1/4">
-          <UserPost post={post} />
-
-          {post.totalLikes}
-          {/* <img src={post.user.profilePictureUrl} alt="" className="rounded-full w-6" />
+          {/* <UserPost post={post} /> */}
+          {postModal.totalLikes} likes
+          <img src={post.user.profilePictureUrl} alt="" className="rounded-full w-6" />
           {post.user.username}
           <img src={post.imageUrl} alt="" />
           <img src={post.user.profilePictureUrl} alt="" className="rounded-full w-6" />
           {post.user.username}
           {post.caption}
-          {post.totalLikes} */}
-
+          {post.totalLikes}
           <div className="flex flex-row">
             {userId === user.id && (
               <button onClick={deletePost}>

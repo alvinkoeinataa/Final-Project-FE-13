@@ -69,11 +69,11 @@ function Login() {
   }, [userId, token]);
   return (
     <div>
-      <div className="h-screen md:flex">
+      <div className="h-screen md:flex bg-lime-200">
         <Photogram />
 
-        <div className="flex justify-center items-center w-full sm:w-3/4 bg-green-400">
-          <div className="bg-white p-8 rounded w-3/4 md:w-1/2 h-screen md:h-1/2">
+        <div className="flex justify-center items-center w-full h-screen">
+          <div className="bg-white p-4 rounded w-3/4 sm:w-1/2 md:w-1/2 lg:w-1/2 shadow-2xl">
             <h5 className="text-center text-xl font-medium mb-2">Login</h5>
             <form onSubmit={formik.handleSubmit}>
               {Object.keys(formik.initialValues).map((value, index) => (
@@ -99,7 +99,7 @@ function Login() {
               <div className="mt-2">
                 <label className="inline-flex items-center">
                   <input type="checkbox" className="form-checkbox text-blue-500" onChange={togglePassword} />
-                  <span className="ml-2">Show Password</span>
+                  <span className="ml-2">Toogle Password</span>
                 </label>
               </div>
               <button type="submit" className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -109,7 +109,7 @@ function Login() {
 
             <div className="mt-4">
               <p>
-                Don t have an account
+                Dont have an account
                 <span>
                   <Link href="/register" className="text-blue-600 ml-4">
                     Register

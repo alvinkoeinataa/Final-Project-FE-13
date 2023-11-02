@@ -6,12 +6,12 @@ import UserPost from "./userPost";
 import Cookies from "js-cookie";
 import YourFollow from "./yourFollow";
 import Navhome from "./navhome";
+import Bottomnav from "./bottomnav";
 
 const Explore = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [postLikes, setPostLikes] = useState({});
 
   const blockedUserIds = ["a54c59e7-a1b6-4ac4-ae7b-9885a98ed869", "5b7a6783-2071-4e9f-9b8e-8e7fc4a981d4"];
 
@@ -51,7 +51,9 @@ const Explore = () => {
     <div className="mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-4">
         <div className="md:col-span-1 hidden md:block">
-          <Navhome />
+          <div className="fixed">
+            <Navhome />
+          </div>
         </div>
 
         <div className="w-full md:col-span-2 items-center bg-white">
@@ -67,6 +69,7 @@ const Explore = () => {
           </button>
         </div>
 
+        <Bottomnav />
         <YourFollow />
       </div>
     </div>

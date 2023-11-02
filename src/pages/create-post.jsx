@@ -3,6 +3,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import Navhome from "@/components/navhome";
+import Bottomnav from "@/components/bottomnav";
 
 export default function CreatePost() {
   const [file, setFile] = useState("");
@@ -104,6 +105,8 @@ export default function CreatePost() {
           Upload
         </button>
       </div>
+
+      <Bottomnav />
     </div>
   );
 }

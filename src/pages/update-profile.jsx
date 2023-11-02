@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import Navhome from "@/components/navhome";
+import Bottomnav from "@/components/bottomnav";
 
 function UpdateProfile() {
   const [userId, setUserId] = useState(null);
@@ -126,12 +127,13 @@ function UpdateProfile() {
   }, [userId, token]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4">
-      <div className="p-4 md:col-span-1 hidden md:block pt-20">
+    <div className="grid grid-cols-1 md:grid-cols-4 ">
+      <div className="p-4 md:col-span-1 hidden md:block pt-20 ">
         <Navhome />
       </div>
 
-      <div className="mt-8 bg-blue-100 md:col-span-3">
+      <div className="mt-6 md:col-span-3 flex flex-col items-center pb-6">
+        <h1 className="text-2xl">Update Profile</h1>
         {imageUrl && (
           <div className="flex items-center justify-center">
             <img src={imageUrl} alt="Profile" className="w-48 h-48 object-cover rounded-full" />
@@ -139,7 +141,7 @@ function UpdateProfile() {
         )}
         <input
           type="file"
-          className="mb-2 mx-auto p-4 flex items-center justify-center"
+          className="mb-2 mx-auto p-2 flex items-center justify-center"
           // value={inputFile}
           onChange={(e) => {
             setFile(e.target.files[0]);
@@ -150,12 +152,12 @@ function UpdateProfile() {
 
         <form onSubmit={formik.handleSubmit} className="max-w-md mx-auto space-y-4">
           {Object.keys(formik.initialValues).map((value, index) => (
-            <div className="flex items-center mb-4" key={index}>
+            <div className="flex items-center mb-2" key={index}>
               <label htmlFor={value} className="block font-semibold w-1/3">
                 {value.charAt(0).toUpperCase() + value.slice(1)}:
               </label>
               <input
-                className="w-2/3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 px-3 py-2"
+                className="w-2/3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 px-3 py-1"
                 id={value}
                 name={value}
                 type={value === "password" ? "password" : "text"}
@@ -173,6 +175,8 @@ function UpdateProfile() {
           </button>
         </form>
       </div>
+
+      <Bottomnav />
     </div>
   );
 }

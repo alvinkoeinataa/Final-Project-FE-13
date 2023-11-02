@@ -3,6 +3,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import UserPost from "./userPost";
+import YourFollow from "./yourFollow";
+import Navhome from "./navhome";
 
 export const GetMyFollow = () => {
   const [users, setUsers] = useState([]);
@@ -13,6 +15,8 @@ export const GetMyFollow = () => {
   const [loadMore, setLoadMore] = useState(true);
   // const [token, setToken] = useState("");
   // const [userId, setUserId] = useState(null);
+
+  const blockedUserIds = ["a54c59e7-a1b6-4ac4-ae7b-9885a98ed869", "5b7a6783-2071-4e9f-9b8e-8e7fc4a981d4"];
 
   const fetchDataFollow = (currentPage) => {
     axios({
@@ -93,6 +97,11 @@ export const GetMyFollow = () => {
     }
   };
 
+  const filterBlockedUsers = (posts) => {
+    const filteredPosts = posts.filter((post) => !blockedUserIds.includes(post.userId));
+    return filteredPosts;
+  };
+
   useEffect(() => {
     fetchDataFollow(currentPage);
   }, [currentPage]);
@@ -106,24 +115,26 @@ export const GetMyFollow = () => {
   // }, [users]);
 
   return (
-    <div className="mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-      <div className="flex flex-col items-center">
-        <div className="w-full md:w-1/2 items-center bg-white">
-          {/* Daftar Pengguna */}
+    <div className="mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-4">
+        <div className="md:col-span-1 hidden md:block">
+          <Navhome />
+        </div>
+
+        <div className="w-full md:col-span-2 items-center bg-white">
           <ul className="grid grid-cols-1">
-            {users.map((user, index) => (
-              <li key={`${user.id}-${index}`} className="flex flex-col items-center border border-black">
+            {filterBlockedUsers(users).map((user, index) => (
+              <li key={`${user.id}-${index}`} className="flex flex-col border border-black">
                 <UserPost post={user} />
               </li>
             ))}
           </ul>
-
-          {loadMore ? (
-            <button onClick={handleLoadMore} className="bg-blue-500 text-white px-4 py-2 mt-4 rounded w-full">
-              Load More...
-            </button>
-          ) : null}
+          <button onClick={handleLoadMore} className="bg-blue-500 text-white px-4 py-2 mt-4 rounded w-full">
+            Load More...
+          </button>
         </div>
+
+        <YourFollow />
       </div>
     </div>
   );

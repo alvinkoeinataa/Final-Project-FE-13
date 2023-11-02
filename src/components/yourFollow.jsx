@@ -44,7 +44,7 @@ function YourFollow() {
   }, [userId, token]);
 
   return (
-    <div className="md:col-span-1 hidden md:block fixed right-20">
+    <div className="md:col-span-1 hidden lg:block fixed right-20">
       <div>
         <h1 className="flex text-lg justify-center">Your Following</h1>
         {users.map((item, index) => (

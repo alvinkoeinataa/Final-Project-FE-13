@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
+import { Image } from "react-bootstrap";
 
 const UserPost = ({ post }) => {
   const [comment, setComment] = useState("");
@@ -82,7 +83,7 @@ const UserPost = ({ post }) => {
     <div className="mt-4">
       {post.user && (
         <div className="flex ">
-          <div>{post.user.profilePictureUrl && <img src={post.user.profilePictureUrl} alt="gambar" className="w-8 h-8 rounded-full mr-2" />}</div>
+          <div>{post.user.profilePictureUrl && <Image src={post.user.profilePictureUrl} alt="gambar" className="w-8 h-8 rounded-full mr-2" />} </div>
           <div>
             <Link href={`/profile/${post.user.id}`}>{post.user.username}</Link>
           </div>
@@ -90,7 +91,7 @@ const UserPost = ({ post }) => {
       )}
 
       <div className="relative w-full max-h-88 overflow-hidden">
-        <img src={post.imageUrl} alt="gambar" className="object-cover w-full h-full" />
+        <Image src={post.imageUrl} alt="gambar" width={800} height={600} layout="fixed" />
       </div>
 
       {post.user && (
@@ -110,7 +111,6 @@ const UserPost = ({ post }) => {
         </div>
       )}
 
-      {/* <p className="pl-3">{postLikes} likes</p> */}
       <div className="ml-4">
         {postLikes === 0 ? (
           <>

@@ -11,8 +11,7 @@ import { Photogram } from "@/components/photogram";
 
 function Register() {
   const router = useRouter();
-  const [inputFile, setInputFile] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -62,7 +61,7 @@ function Register() {
           password: values.password,
           passwordRepeat: values.passwordRepeat,
           phoneNumber: values.phoneNumber,
-          profilePictureUrl: inputFile,
+          profilePictureUrl: "",
           bio: values.bio,
           website: values.website,
         },
@@ -83,11 +82,11 @@ function Register() {
   });
   return (
     <div>
-      <div className="h-screen md:flex">
+      <div className="h-screen md:flex bg-lime-200">
         <Photogram />
 
-        <div className="flex justify-center items-center w-full sm:w-full bg-green-400">
-          <div className="bg-white p-8 rounded w-3/4 md:w-1/2">
+        <div className="flex justify-center items-center w-full sm:w-full bg-lime-200 py-6">
+          <div className="bg-white p-8 rounded w-3/4 md:w-1/2 shadow-2xl">
             <h5 className="text-center text-xl font-medium mb-2">Register Account</h5>
             <form onSubmit={formik.handleSubmit}>
               {Object.keys(formik.initialValues).map((value, index) => (
@@ -116,7 +115,7 @@ function Register() {
               <div className="mt-2">
                 <label className="inline-flex items-center">
                   <input type="checkbox" className="form-checkbox text-blue-500" onChange={togglePassword} />
-                  <span className="ml-2">Show Password</span>
+                  <span className="ml-2">Toogle Password</span>
                 </label>
               </div>
 
