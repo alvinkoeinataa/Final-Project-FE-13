@@ -262,7 +262,6 @@ const ProfilePage = () => {
                 openModal(post);
               }}
             >
-              {/* <Link href={`/modal/${post.id}`}> */}
               <Image className="w-full h-40 rounded" src={post.imageUrl} alt="Post" />
               {/* {post.totalLikes} */}
               {/* </Link> */}

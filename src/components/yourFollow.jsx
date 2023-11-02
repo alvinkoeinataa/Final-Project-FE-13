@@ -20,7 +20,7 @@ function YourFollow() {
       },
     })
       .then((response) => {
-        console.log(response.data.data.users);
+        // console.log(response.data.data.users);
         setUsers(response.data.data.users);
       })
       .catch((error) => {
