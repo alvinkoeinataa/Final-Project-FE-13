@@ -238,13 +238,13 @@ const ProfilePage = () => {
         {userIds !== userId ? (
           !isFollow ? (
             <>
-              <button className="p-2 bg-black text-white" onClick={() => followUser(userId)}>
+              <button className="py-2 px-4 bg-black text-white mt-3" onClick={() => followUser(userId)}>
                 Follow
               </button>
             </>
           ) : (
             <>
-              <button className="p-2 bg-blue-400" onClick={() => unfollowUser(userId)}>
+              <button className="p-2 bg-lime-200 mt-3 border border-black" onClick={() => unfollowUser(userId)}>
                 Unfollow
               </button>
             </>
@@ -255,7 +255,7 @@ const ProfilePage = () => {
 
         <h2 className="mt-8 text-2xl font-semibold">User Posts</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4 mb-10">
           {userPosts.map((post) => (
             <div
               key={post.id}
@@ -264,21 +264,19 @@ const ProfilePage = () => {
               }}
             >
               <Image className="w-full h-40 rounded" src={post.imageUrl} alt="Post" />
-              {/* {post.totalLikes} */}
-              {/* </Link> */}
             </div>
           ))}
 
           <Modal isOpen={isModalOpen} closeModal={closeModal}>
-            <div className="pb-6 ">
+            <div className="p-2">
               {activeModalData.user && (
                 <div className="flex flex-row">
                   <Image src={activeModalData.user.profilePictureUrl} alt="" className="w-8 h-8 rounded-full mr-4" />
                   <h1 className="mt-1">{activeModalData.user.username}</h1>
                 </div>
               )}
-              <div className="flex items-center justify-center">
-                <img src={activeModalData.imageUrl} alt="" className="w-3/4 h-1/8" />
+              <div className="flex items-center justify-center w-90 ">
+                <img src={activeModalData.imageUrl} alt="" className="max-h-80" />
               </div>
               {activeModalData.totalLikes} likes
               <br />

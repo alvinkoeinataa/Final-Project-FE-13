@@ -15,7 +15,6 @@ export default function Home() {
       <div>
         <Head>
           <title>Photogram</title>
-          <link rel="icon" href="/fav.icon.ico"></link>
         </Head>
 
         <div className="mt-4 p-2 mx-auto   items-center">
@@ -25,7 +24,7 @@ export default function Home() {
                 onClick={() => {
                   setVisiblePage("explore");
                 }}
-                className="text-white p-2 rounded bg-blue-400 mr-4"
+                className="text-white p-2 rounded bg-green-600 mr-4"
               >
                 Explore
               </button>
@@ -35,7 +34,7 @@ export default function Home() {
                 onClick={() => {
                   setVisiblePage("following");
                 }}
-                className="text-white p-2 rounded bg-blue-400"
+                className="text-white p-2 rounded bg-green-600"
               >
                 Following
               </button>

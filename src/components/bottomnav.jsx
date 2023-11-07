@@ -11,7 +11,7 @@ const Bottomnav = () => {
   const [sideNav, setSideNav] = useState(false);
   return (
     <div>
-      <div className="flex justify-between lg:hidden md:hidden sm-w-[400px]:block bottom-0 fixed w-full h-10 bg-lime-200">
+      <div className="flex justify-between lg:hidden md:hidden sm-w-[400px]:block bottom-0 fixed w-full h-10 bg-lime-100">
         <Link href={"/"}>
           <HomeIcon className="w-8 h-8 ml-4" />
         </Link>
@@ -31,7 +31,7 @@ const Bottomnav = () => {
           <AiOutlineMenu size={32} className="mr-8 mt-1" />
         </div>
 
-        <div className={sideNav ? "fixed top-0 left-0 w-[300px] h-screen bg-white z-10 duration-300" : "fixed top-0 left-[-100%] w-[300px] h-screen z-10 duration-300"}>
+        <div className={sideNav ? "fixed top-0 left-0 w-[300px] h-screen bg-lime-100 z-10 duration-300" : "fixed top-0 left-[-100%] w-[300px] h-screen z-10 duration-300"}>
           <AiOutlineClose onClick={() => setSideNav(!sideNav)} size={25} className="absolute right-4 top-4 cursor-pointer" />
 
           <Navhome />

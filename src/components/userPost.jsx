@@ -97,16 +97,16 @@ const UserPost = ({ post }) => {
       {post.user && (
         <div className="pl-3 pt-3 mr-6">
           {liked ? (
-            <button onClick={() => handleUnlikePost(post.id)} className="text-2xl px-2 py-1 rounded">
+            <button onClick={() => handleUnlikePost(post.id)} className="text-2xl px-2 rounded mr-4">
               <FontAwesomeIcon icon={fasHeart} />
             </button>
           ) : (
-            <button onClick={() => handleLikePost(post.id)} className="text-2xl px-2 py-1 rounded mr-2">
+            <button onClick={() => handleLikePost(post.id)} className="text-2xl px-2 rounded mr-4">
               <FontAwesomeIcon icon={farHeart} />
             </button>
           )}
 
-          <input type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
+          <input className="pb-2" type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
           {comment && <button onClick={() => handleComment(post.id)}>Post</button>}
         </div>
       )}

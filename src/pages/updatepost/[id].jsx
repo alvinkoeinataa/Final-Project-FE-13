@@ -94,17 +94,17 @@ export default function UpdatePost() {
   }, [id]);
 
   return (
-    <>
+    <div className="grid grid-cols-1 md:grid-cols-4">
       <div className="p-4 md:col-span-1 hidden md:block pt-20">
         <Navhome />
       </div>
-      <div className="max-w-md mx-auto p-4 bg-white rounded shadow mt-8">
+      <div className="max-w-md mx-auto p-4 w-[600px] bg-white rounded shadow">
         <h1 className="text-2xl font-semibold mb-4">Update Post</h1>
 
-        <img className="w-full h-40 object-cover rounded" src={imageUrl} alt="Post" />
+        <img className="w-full h-70 object-cover rounded" src={imageUrl} alt="Post" />
         <input
           type="file"
-          className="mb-2 mx-auto p-4 flex items-center justify-center"
+          className="mb-2 mx-auto p-4"
           onChange={(e) => {
             const selectedFile = e.target.files[0];
             if (selectedFile) {
@@ -124,11 +124,7 @@ export default function UpdatePost() {
         <button onClick={handleUpload} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
           Upload
         </button>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4">
-          <div></div>
-        </div>
       </div>
-    </>
+    </div>
   );
 }
