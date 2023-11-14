@@ -14,8 +14,6 @@ export const GetMyFollow = () => {
   const [totalPages, setTotalPages] = useState(0);
 
   const [loadMore, setLoadMore] = useState(true);
-  // const [token, setToken] = useState("");
-  // const [userId, setUserId] = useState(null);
 
   const blockedUserIds = ["a54c59e7-a1b6-4ac4-ae7b-9885a98ed869", "5b7a6783-2071-4e9f-9b8e-8e7fc4a981d4"];
 
@@ -57,14 +55,6 @@ export const GetMyFollow = () => {
   useEffect(() => {
     fetchDataFollow(currentPage);
   }, [currentPage]);
-
-  // useEffect(() => {
-  //   const initialLikes = {};
-  //   users.forEach((user) => {
-  //     initialLikes[user.id] = user.totalLikes;
-  //   });
-  //   setPostLikes(initialLikes);
-  // }, [users]);
 
   return (
     <div className="mx-auto">

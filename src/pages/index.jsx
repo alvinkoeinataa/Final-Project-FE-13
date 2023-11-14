@@ -24,7 +24,7 @@ export default function Home() {
                 onClick={() => {
                   setVisiblePage("explore");
                 }}
-                className="text-white p-2 rounded bg-green-600 mr-4"
+                className="text-white py-2 px-3 rounded bg-green-600 mr-4"
               >
                 Explore
               </button>

@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Navhome from "@/components/navhome";
-
 import Link from "next/link";
 import { Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
 import Bottomnav from "@/components/bottomnav";
 import Modal from "@/components/modal";
 
@@ -20,8 +21,8 @@ const ProfilePage = () => {
   const [userFollowers, setUserFollowers] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState("");
-
   const userIds = Cookies.get("userId");
+  const [liked, setLiked] = useState(true);
 
   const defaultModalData = {
     imageUrl: "",
@@ -34,7 +35,7 @@ const ProfilePage = () => {
 
   const [isFollow, setIsFollow] = useState(false);
   const [totalPost, setTotalPost] = useState({});
-
+ 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -44,7 +45,6 @@ const ProfilePage = () => {
             Authorization: `Bearer ${Cookies.get("token")}`,
           },
         });
-
         const data = response.data;
         setUserData(data.data);
       } catch (error) {
@@ -64,7 +64,6 @@ const ProfilePage = () => {
         const data = response.data;
         setUserPosts(data.data.posts);
         setTotalPost(data.data);
-        // console.log(data.data.posts);
       } catch (error) {
         console.error("Error fetching user posts:", error);
       }
@@ -78,7 +77,6 @@ const ProfilePage = () => {
             Authorization: `Bearer ${Cookies.get("token")}`,
           },
         });
-
         const data = response.data;
         setUserFollowing(data.data);
       } catch (error) {
@@ -94,7 +92,6 @@ const ProfilePage = () => {
             Authorization: `Bearer ${Cookies.get("token")}`,
           },
         });
-
         const data = response.data;
         setUserFollowers(data.data);
       } catch (error) {
@@ -105,7 +102,6 @@ const ProfilePage = () => {
     if (userId) {
       fetchUserData();
       fetchUserPosts();
-
       fetchUserFollowing();
       fetchUserFollowers();
     }
@@ -130,26 +126,22 @@ const ProfilePage = () => {
 
       setIsFollow(true);
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error("Error following user:", error);
     }
   };
 
   const unfollowUser = async (userId) => {
     try {
-      const response = await axios.request({
-        method: "delete",
-        maxBodyLength: Infinity,
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/unfollow/${userId}`,
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/unfollow/${userId}`, {
         headers: {
           apiKey: process.env.NEXT_PUBLIC_API_KEY,
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
-        data: "",
       });
 
       setIsFollow(false);
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error("Error unfollowing user:", error);
     }
   };
 
@@ -162,7 +154,6 @@ const ProfilePage = () => {
         },
       });
 
-      // update only comment
       setUser(response.data.data);
       setActiveModalData((prevState) => ({ ...prevState, comments: response.data.data.comments }));
     } catch (error) {
@@ -173,7 +164,6 @@ const ProfilePage = () => {
   const openModal = (post) => {
     setActiveModalData((prevState) => ({ ...prevState, ...post, ...post.user }));
     getComments(post.id);
-
     setIsModalOpen(true);
   };
 
@@ -201,6 +191,54 @@ const ProfilePage = () => {
       });
   };
 
+  const handleLikePost = async (postId) => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/like`,
+        { postId },
+        {
+          headers: {
+            apiKey: process.env.NEXT_PUBLIC_API_KEY,
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+        }
+      );
+
+      setActiveModalData((prevData) => ({
+        ...prevData,
+        isLike: true,
+        totalLikes: prevData.totalLikes + 1,
+      }));
+      setLiked(true);
+    } catch (error) {
+      console.error("Error liking post:", error);
+    }
+  };
+
+  const handleUnlikePost = async (postId) => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/unlike`,
+        { postId },
+        {
+          headers: {
+            apiKey: process.env.NEXT_PUBLIC_API_KEY,
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+        }
+      );
+
+      setActiveModalData((prevData) => ({
+        ...prevData,
+        isLike: false,
+        totalLikes: prevData.totalLikes - 1,
+      }));
+      setLiked(false);
+    } catch (error) {
+      console.error("Error unliking post:", error);
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-4">
       <div className="p-4 md:col-span-1 hidden md:block pt-20">
@@ -214,7 +252,6 @@ const ProfilePage = () => {
           <div className="md:ml-4">
             <p className="text-xl font-semibold">{userData.username}</p>
             <p className="text-gray-600 mb-1">{userData.name}</p>
-
             <p className="text-gray-600">{userData.website}</p>
           </div>
 
@@ -275,9 +312,18 @@ const ProfilePage = () => {
                   <h1 className="mt-1">{activeModalData.user.username}</h1>
                 </div>
               )}
-              <div className="flex items-center justify-center w-90 ">
+              <div className="flex items-center justify-center w-90">
                 <img src={activeModalData.imageUrl} alt="" className="max-h-80" />
               </div>
+              {liked ? (
+                <button onClick={() => handleUnlikePost(activeModalData.id)} className="text-2xl px-2 rounded mr-4">
+                  <FontAwesomeIcon icon={fasHeart} />
+                </button>
+              ) : (
+                <button onClick={() => handleLikePost(activeModalData.id)} className="text-2xl px-2 rounded mr-4">
+                  <FontAwesomeIcon icon={farHeart} />
+                </button>
+              )}
               {activeModalData.totalLikes} likes
               <br />
               <div className="flex flex-row">
@@ -295,22 +341,10 @@ const ProfilePage = () => {
               {activeModalData.user && (
                 <div className="flex flex-row">
                   <Image src={activeModalData.user.profilePictureUrl} alt="gambar" className="rounded-full mr-4 w-6 h-6" />
-                  {/* <img src={activeModalData.user.profilePictureUrl} alt="" className="w-6 h-6 rounded-full mr-4" /> */}
                   <h3 className="ml-2 mr-6 font-bold">{activeModalData.user.username}</h3>
                   <h3 className="">{activeModalData.caption}</h3>
                 </div>
               )}
-              {/* <br />
-            isLike: {activeModalData.isLike ? "true" : "false"}
-            <br />
-            <br /> */}
-              {activeModalData.comments.map((item, index) => (
-                <div key={index} className="flex">
-                  {/* <img src={item.user.profilePictureUrl} alt="" className="w-6 h-6 rounded-full mr-6" /> */}
-                  <Image src={item.user.profilePictureUrl} alt="" className="w-6 h-6 rounded-full mr-6" />
-                  <h1 className="font-bold mr-6">{item.user.username} </h1> {item.comment}
-                </div>
-              ))}
             </div>
           </Modal>
         </div>
