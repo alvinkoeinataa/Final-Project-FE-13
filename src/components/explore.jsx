@@ -49,7 +49,7 @@ const Explore = () => {
 
   return (
     <div className="mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 mb-10">
         <div className="md:col-span-1 hidden md:block">
           <div className="fixed">
             <Navhome />
@@ -64,7 +64,7 @@ const Explore = () => {
               </li>
             ))}
           </ul>
-          <button onClick={handleLoadMore} className="bg-blue-500 text-white px-4 py-2 mt-2 rounded w-full mb-8">
+          <button onClick={handleLoadMore} className="bg-blue-500 text-white px-4 py-2 mt-2 rounded w-full">
             Load More...
           </button>
         </div>
