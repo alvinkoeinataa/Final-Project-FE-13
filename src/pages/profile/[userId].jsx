@@ -11,6 +11,7 @@ import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
 import Bottomnav from "@/components/bottomnav";
 import Modal from "@/components/modal";
+import Login from "../login";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -22,20 +23,21 @@ const ProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState("");
   const userIds = Cookies.get("userId");
-  const [liked, setLiked] = useState(true);
 
   const defaultModalData = {
-    imageUrl: "",
+    id: "", // post id
+    imageUrl: "", // post image
     caption: "",
-    isLike: "",
-    totalLikes: "",
+    isLike: false,
+    totalLikes: 0,
+    user: {}, // post owner
     comments: [],
   };
   const [activeModalData, setActiveModalData] = useState({ ...defaultModalData });
 
   const [isFollow, setIsFollow] = useState(false);
   const [totalPost, setTotalPost] = useState({});
- 
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -162,8 +164,9 @@ const ProfilePage = () => {
   };
 
   const openModal = (post) => {
-    setActiveModalData((prevState) => ({ ...prevState, ...post, ...post.user }));
+    setActiveModalData((prevState) => ({ ...prevState, ...post }));
     getComments(post.id);
+    console.log(post);
     setIsModalOpen(true);
   };
 
@@ -204,12 +207,27 @@ const ProfilePage = () => {
         }
       );
 
+      const isLike = true;
+      const totalLikes = activeModalData.totalLikes + 1;
+
       setActiveModalData((prevData) => ({
         ...prevData,
-        isLike: true,
-        totalLikes: prevData.totalLikes + 1,
+        isLike: isLike,
+        totalLikes: totalLikes,
       }));
-      setLiked(true);
+
+      setUserPosts((prevPosts) => {
+        return prevPosts.map((prevPost) => {
+          if (prevPost.id === postId) {
+            prevPost = { ...prevPost, isLike: isLike, totalLikes: totalLikes };
+            /*
+            prevPost.isLike = isLike;
+            prevPost.totalLikes = totalLikes;
+            */
+          }
+          return prevPost;
+        });
+      });
     } catch (error) {
       console.error("Error liking post:", error);
     }
@@ -228,12 +246,24 @@ const ProfilePage = () => {
         }
       );
 
+      const isLike = false;
+      const totalLikes = activeModalData.totalLikes - 1;
+
       setActiveModalData((prevData) => ({
         ...prevData,
-        isLike: false,
-        totalLikes: prevData.totalLikes - 1,
+        isLike: isLike,
+        totalLikes: totalLikes,
       }));
-      setLiked(false);
+      setUserPosts((prevPosts) => {
+        return prevPosts.map((prevPost) => {
+          if (prevPost.id === postId) {
+            // prevPost = { ...prevPost, isLike: isLike, totalLikes: totalLikes };
+            prevPost.isLike = isLike;
+            prevPost.totalLikes = totalLikes;
+          }
+          return prevPost;
+        });
+      });
     } catch (error) {
       console.error("Error unliking post:", error);
     }
@@ -315,7 +345,7 @@ const ProfilePage = () => {
               <div className="flex items-center justify-center w-90">
                 <img src={activeModalData.imageUrl} alt="" className="max-h-80" />
               </div>
-              {liked ? (
+              {activeModalData.isLike ? (
                 <button onClick={() => handleUnlikePost(activeModalData.id)} className="text-2xl px-2 rounded mr-4">
                   <FontAwesomeIcon icon={fasHeart} />
                 </button>

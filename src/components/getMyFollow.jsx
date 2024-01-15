@@ -71,7 +71,7 @@ export const GetMyFollow = () => {
               </li>
             ))}
           </ul>
-          <button onClick={handleLoadMore} className="bg-blue-500 text-white px-4 py-2 mt-4 rounded w-full">
+          <button onClick={handleLoadMore} className="bg-green-600 text-white px-4 py-2 mt-4 rounded w-full">
             Load More...
           </button>
         </div>

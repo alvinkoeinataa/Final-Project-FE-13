@@ -74,6 +74,7 @@ const UserPost = ({ post }) => {
   };
 
   useEffect(() => {
+    // console.log("isi post adalah:", post);
     setLiked(post.isLike);
     setPostLikes(post.totalLikes);
   }, [post]);
@@ -89,8 +90,8 @@ const UserPost = ({ post }) => {
         </div>
       )}
 
-      <div className="relative w-full max-h-88 overflow-hidden">
-        <Image src={post.imageUrl} alt="gambar" width={800} height={600} layout="fixed" />
+      <div className="relative w-full max-h-[400px] overflow-hidden flex items-center justify-center">
+        <Image src={post.imageUrl} alt="gambar" className="w-auto h-full object-contain " />
       </div>
 
       {post.user && (
