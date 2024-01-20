@@ -60,7 +60,7 @@ export default function UpdatePost() {
           .request(config)
           .then((res) => {
             alert(res.data.message);
-            router.push(`/`);
+            router.push(`/profile/${userId}`);
           })
           .catch((err) => {
             console.log(err);

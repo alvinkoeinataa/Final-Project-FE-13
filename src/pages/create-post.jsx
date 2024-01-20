@@ -56,7 +56,7 @@ export default function CreatePost() {
           .request(config)
           .then((res) => {
             alert(res.data.message);
-            router.push(`/`);
+            router.push(`/profile/${userId}`);
           })
           .catch((err) => {
             console.log(err);
@@ -81,7 +81,7 @@ export default function CreatePost() {
       <div className="p-4 md:col-span-1 hidden md:block pt-20">
         <Navhome />
       </div>
-      <div className="max-w-md mx-auto p-4 bg-white rounded shadow bg-blue-100 mt-8 md:col-span-3">
+      <div className="max-w-md w-[1200px] mx-auto p-4 rounded shadow bg-blue-100 mt-8 md:col-span-3">
         <h1 className="text-2xl font-semibold mb-4">Create Post</h1>
 
         <h1 className="mt-8 mb-2">Choose your image</h1>

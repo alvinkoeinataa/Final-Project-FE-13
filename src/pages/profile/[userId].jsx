@@ -23,6 +23,9 @@ const ProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState("");
   const userIds = Cookies.get("userId");
+  const name = Cookies.get("name");
+  // const profilePictureUrl = Cookies.get("profilePictureUrl");
+  const [comment, setComment] = useState("");
 
   const defaultModalData = {
     id: "", // post id
@@ -38,7 +41,7 @@ const ProfilePage = () => {
   const [isFollow, setIsFollow] = useState(false);
   const [totalPost, setTotalPost] = useState({});
 
-  console.log(userIds);
+  // console.log(userIds);
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -67,6 +70,7 @@ const ProfilePage = () => {
         const data = response.data;
         setUserPosts(data.data.posts);
         setTotalPost(data.data);
+        // console.log(data.data.posts);
       } catch (error) {
         console.error("Error fetching user posts:", error);
       }
@@ -97,8 +101,6 @@ const ProfilePage = () => {
         });
         const data = response.data;
         setUserFollowers(data.data);
-
-        console.log(data.data);
         setIsFollow((data.data.users || []).find((v) => v.id === userIds));
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -161,6 +163,7 @@ const ProfilePage = () => {
       });
 
       setUser(response.data.data);
+      console.log(response.data.data);
       setActiveModalData((prevState) => ({ ...prevState, comments: response.data.data.comments }));
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -170,7 +173,6 @@ const ProfilePage = () => {
   const openModal = (post) => {
     setActiveModalData((prevState) => ({ ...prevState, ...post }));
     getComments(post.id);
-    console.log(post);
     setIsModalOpen(true);
   };
 
@@ -273,6 +275,59 @@ const ProfilePage = () => {
     }
   };
 
+  const handleComment = async (postId) => {
+    try {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/create-comment`,
+        { postId, comment: comment },
+        {
+          headers: {
+            apiKey: process.env.NEXT_PUBLIC_API_KEY,
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+        }
+      );
+
+      const newComment = {
+        user: {
+          // profilePictureUrl: profilePictureUrl,
+          username: name,
+        },
+        comment: comment,
+      };
+
+      setActiveModalData((prevData) => ({
+        ...prevData,
+        comments: [...prevData.comments, newComment],
+      }));
+
+      setComment("");
+      alert("Comment created");
+    } catch (error) {
+      console.error("Error commenting on post:", error);
+    }
+  };
+
+  const deleteComment = async (postId) => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/create-comment`,
+        { postId, comment: comment },
+        {
+          headers: {
+            apiKey: process.env.NEXT_PUBLIC_API_KEY,
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+        }
+      );
+
+      setComment("");
+      alert("Comment created");
+    } catch (error) {
+      console.error("Error liking post:", error);
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-4">
       <div className="p-4 md:col-span-1 hidden md:block pt-20">
@@ -361,12 +416,12 @@ const ProfilePage = () => {
               {activeModalData.totalLikes} likes
               <br />
               <div className="flex flex-row">
-                {userIds === activeModalData.id && (
+                {userIds === userId && (
                   <button onClick={deletePost}>
                     <FontAwesomeIcon icon={faTrash} className="mr-4 w-6 my-3" />
                   </button>
                 )}
-                {userIds === activeModalData.id && (
+                {userIds === userId && (
                   <Link href={`/updatepost/${user.id}`}>
                     <FontAwesomeIcon icon={faPenSquare} className="w-6 my-3" />
                   </Link>
@@ -377,9 +432,20 @@ const ProfilePage = () => {
                   <Image src={activeModalData.user.profilePictureUrl} alt="gambar" className="rounded-full mr-4 w-6 h-6" />
                   <h3 className="ml-2 mr-6 font-bold">{activeModalData.user.username}</h3>
                   <h3 className="">{activeModalData.caption}</h3>
+                  <input className="pb-2" type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
+                  <button onClick={() => handleComment(activeModalData.id)}>Post</button>
                 </div>
               )}
+              {activeModalData.comments.map((item, index) => (
+                <div key={index} className="flex">
+                  {/* <img src={item.user.profilePictureUrl} alt="" className="w-6 h-6 rounded-full mr-6" /> */}
+                  <Image src={item.user.profilePictureUrl} alt="" className="w-6 h-6 rounded-full mr-6" />
+                  <h1 className="font-bold mr-6">{item.user.username} </h1> {item.comment}
+                </div>
+              ))}
             </div>
+            {/* <input className="pb-2" type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
+            <button onClick={() => handleComment(post.id)}>Post</button> */}
           </Modal>
         </div>
       </div>
