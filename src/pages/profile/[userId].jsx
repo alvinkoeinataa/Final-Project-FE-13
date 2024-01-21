@@ -163,7 +163,7 @@ const ProfilePage = () => {
       });
 
       setUser(response.data.data);
-      console.log(response.data.data);
+
       setActiveModalData((prevState) => ({ ...prevState, comments: response.data.data.comments }));
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -288,43 +288,34 @@ const ProfilePage = () => {
         }
       );
 
-      const newComment = {
-        user: {
-          // profilePictureUrl: profilePictureUrl,
-          username: name,
-        },
-        comment: comment,
-      };
-
       setActiveModalData((prevData) => ({
         ...prevData,
-        comments: [...prevData.comments, newComment],
+        comments: [...prevData.comments],
       }));
 
       setComment("");
+
       alert("Comment created");
+      window.location.reload();
     } catch (error) {
       console.error("Error commenting on post:", error);
     }
   };
 
-  const deleteComment = async (postId) => {
+  const deleteComment = async () => {
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/create-comment`,
-        { postId, comment: comment },
-        {
-          headers: {
-            apiKey: process.env.NEXT_PUBLIC_API_KEY,
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-        }
-      );
+      const commentId = user.comments[0].id;
+      await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/delete-comment/${commentId}`, {
+        headers: {
+          apiKey: process.env.NEXT_PUBLIC_API_KEY,
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      });
 
-      setComment("");
-      alert("Comment created");
+      alert("Delete success");
+      window.location.reload();
     } catch (error) {
-      console.error("Error liking post:", error);
+      console.error("Error deleting comment:", error);
     }
   };
 
@@ -432,20 +423,30 @@ const ProfilePage = () => {
                   <Image src={activeModalData.user.profilePictureUrl} alt="gambar" className="rounded-full mr-4 w-6 h-6" />
                   <h3 className="ml-2 mr-6 font-bold">{activeModalData.user.username}</h3>
                   <h3 className="">{activeModalData.caption}</h3>
-                  <input className="pb-2" type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
-                  <button onClick={() => handleComment(activeModalData.id)}>Post</button>
                 </div>
               )}
               {activeModalData.comments.map((item, index) => (
                 <div key={index} className="flex">
-                  {/* <img src={item.user.profilePictureUrl} alt="" className="w-6 h-6 rounded-full mr-6" /> */}
                   <Image src={item.user.profilePictureUrl} alt="" className="w-6 h-6 rounded-full mr-6" />
-                  <h1 className="font-bold mr-6">{item.user.username} </h1> {item.comment}
+                  <h1 className="font-bold mr-4">{item.user.username} </h1>
+                  {item.comment}
+                  <span className="ml-10">
+                    {item.user.id === userIds ? (
+                      <button onClick={() => deleteComment(activeModalData.id, item.id)}>
+                        <FontAwesomeIcon icon={faTrash} className="mr-4 w-6" />
+                      </button>
+                    ) : null}
+                  </span>
                 </div>
               ))}
             </div>
-            {/* <input className="pb-2" type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
-            <button onClick={() => handleComment(post.id)}>Post</button> */}
+
+            {activeModalData.user && (
+              <div className="ml-14 mb-2">
+                <input className="pb-2" type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
+                <button onClick={() => handleComment(activeModalData.id)}>Post</button>
+              </div>
+            )}
           </Modal>
         </div>
       </div>

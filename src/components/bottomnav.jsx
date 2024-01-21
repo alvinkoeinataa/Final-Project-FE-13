@@ -20,12 +20,6 @@ const Bottomnav = () => {
           <PlusIcon className="w-8 h-8" />
         </Link>
 
-        {/* <Link href={"/create-post"}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </Link> */}
-
         {sideNav ? <div className="bg-black/60 fixed w-full h-screen  z-10 top-0 left-0" onClick={() => setSideNav(!sideNav)}></div> : " "}
         <div className="cursor-pointer" onClick={() => setSideNav(!sideNav)}>
           <AiOutlineMenu size={32} className="mr-8 mt-1" />

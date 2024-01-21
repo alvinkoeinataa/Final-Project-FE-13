@@ -35,7 +35,7 @@ function Register() {
       password: Yup.string()
         .min(5, "Must be 5 characters or more")
         .max(15, "Must be less than 15 characters")
-        .matches(/^.*(?=.*\d)((?=.*[a-zA-Z]){1}).*$/, "Password must contain atleast one letter and one number")
+
         .required("Required"),
       passwordRepeat: Yup.string()
         .oneOf([Yup.ref("password")], "Password does not match")
@@ -96,7 +96,7 @@ function Register() {
                       {value.charAt(0).toUpperCase() + value.slice(1)}:
                     </label>
 
-                    {formik.touched[value] && formik.errors[value] ? <div className="text-red-500">{formik.errors[value]}</div> : null}
+                    {formik.touched[value] && formik.errors[value] ? <div className="text-red-400">{formik.errors[value]}</div> : null}
                   </div>
 
                   <input
@@ -104,7 +104,6 @@ function Register() {
                     id={value}
                     name={value}
                     type={(value === "password" && showPassword) || (value === "passwordRepeat" && showPassword) ? "password" : "text"}
-                    placeholder={`Enter your ${value}`}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values[value]}

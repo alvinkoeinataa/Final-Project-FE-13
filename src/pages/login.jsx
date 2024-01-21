@@ -41,7 +41,6 @@ function Login() {
         })
         .then((res) => {
           const token = res.data.token;
-
           Cookies.set("token", token);
 
           const name = res.data.user.name;
@@ -78,9 +77,13 @@ function Login() {
             <form onSubmit={formik.handleSubmit}>
               {Object.keys(formik.initialValues).map((value, index) => (
                 <div className="mb-2" key={index}>
-                  <label htmlFor={value} className="block mb-1">
-                    {value.charAt(0).toUpperCase() + value.slice(1)}:
-                  </label>
+                  <div className="flex flex-row">
+                    <label htmlFor={value} className="block mb-1 mr-4">
+                      {value.charAt(0).toUpperCase() + value.slice(1)}:
+                    </label>
+                    {formik.touched[value] && formik.errors[value] ? <div className="text-red-400 mb-2">{formik.errors[value]}</div> : null}
+                  </div>
+
                   <input
                     className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     id={value}
@@ -92,7 +95,6 @@ function Login() {
                     onBlur={formik.handleBlur}
                     value={formik.values[value]}
                   />
-                  {formik.touched[value] && formik.errors[value] ? <div className="text-red-500 mt-1">{formik.errors[value]}</div> : null}
                 </div>
               ))}
 
