@@ -5,15 +5,16 @@ import axios from "axios";
 import UserPost from "./userPost";
 import Cookies from "js-cookie";
 import YourFollow from "./yourFollow";
-import Navhome from "./navhome";
+
 import Bottomnav from "./bottomnav";
+import Navhome from "@/components/layouts/navhome";
 
 const Explore = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
-  const blockedUserIds = ["a54c59e7-a1b6-4ac4-ae7b-9885a98ed869", "5b7a6783-2071-4e9f-9b8e-8e7fc4a981d4"];
+  const blockedUserIds = ["a54c59e7-a1b6-4ac4-ae7b-9885a98ed869", "5b7a6783-2071-4e9f-9b8e-8e7fc4a981d4", "38d96e44-5f7c-40a8-a39b-7e03a95d0e5c"];
 
   const fetchData = async (currentPage) => {
     try {

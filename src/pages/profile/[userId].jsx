@@ -2,16 +2,15 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import Navhome from "@/components/navhome";
+import Navhome from "@/components/Layouts/navhome";
 import Link from "next/link";
 import { Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
-import Bottomnav from "@/components/bottomnav";
-import Modal from "@/components/modal";
-import Login from "../login";
+import Bottomnav from "@/components/Layouts/bottomnav";
+import Modal from "@/components/Layouts/modal";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -41,7 +40,6 @@ const ProfilePage = () => {
   const [isFollow, setIsFollow] = useState(false);
   const [totalPost, setTotalPost] = useState({});
 
-  // console.log(userIds);
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -70,7 +68,6 @@ const ProfilePage = () => {
         const data = response.data;
         setUserPosts(data.data.posts);
         setTotalPost(data.data);
-        // console.log(data.data.posts);
       } catch (error) {
         console.error("Error fetching user posts:", error);
       }
@@ -163,7 +160,7 @@ const ProfilePage = () => {
       });
 
       setUser(response.data.data);
-
+      // console.log(response.data.data);
       setActiveModalData((prevState) => ({ ...prevState, comments: response.data.data.comments }));
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -226,10 +223,6 @@ const ProfilePage = () => {
         return prevPosts.map((prevPost) => {
           if (prevPost.id === postId) {
             prevPost = { ...prevPost, isLike: isLike, totalLikes: totalLikes };
-            /*
-            prevPost.isLike = isLike;
-            prevPost.totalLikes = totalLikes;
-            */
           }
           return prevPost;
         });
@@ -302,9 +295,9 @@ const ProfilePage = () => {
     }
   };
 
-  const deleteComment = async () => {
+  const deleteComment = async (index) => {
     try {
-      const commentId = user.comments[0].id;
+      const commentId = user.comments[index].id;
       await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/delete-comment/${commentId}`, {
         headers: {
           apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -395,29 +388,35 @@ const ProfilePage = () => {
               <div className="flex items-center justify-center w-90">
                 <img src={activeModalData.imageUrl} alt="" className="max-h-80" />
               </div>
-              {activeModalData.isLike ? (
-                <button onClick={() => handleUnlikePost(activeModalData.id)} className="text-2xl px-2 rounded mr-4">
-                  <FontAwesomeIcon icon={fasHeart} />
-                </button>
-              ) : (
-                <button onClick={() => handleLikePost(activeModalData.id)} className="text-2xl px-2 rounded mr-4">
-                  <FontAwesomeIcon icon={farHeart} />
-                </button>
-              )}
-              {activeModalData.totalLikes} likes
-              <br />
-              <div className="flex flex-row">
-                {userIds === userId && (
-                  <button onClick={deletePost}>
-                    <FontAwesomeIcon icon={faTrash} className="mr-4 w-6 my-3" />
-                  </button>
-                )}
-                {userIds === userId && (
-                  <Link href={`/updatepost/${user.id}`}>
-                    <FontAwesomeIcon icon={faPenSquare} className="w-6 my-3" />
-                  </Link>
-                )}
+
+              <div className="flex justify-between">
+                <div>
+                  {activeModalData.isLike ? (
+                    <button onClick={() => handleUnlikePost(activeModalData.id)} className="text-2xl px-2 rounded mr-4">
+                      <FontAwesomeIcon icon={fasHeart} />
+                    </button>
+                  ) : (
+                    <button onClick={() => handleLikePost(activeModalData.id)} className="text-2xl px-2 rounded mr-4">
+                      <FontAwesomeIcon icon={farHeart} />
+                    </button>
+                  )}
+                  {activeModalData.totalLikes} likes
+                </div>
+
+                <div className="flex flex-row">
+                  {userIds === userId && (
+                    <Link href={`/updatepost/${user.id}`}>
+                      <FontAwesomeIcon icon={faPenSquare} className="w-6 my-3 text-2xl mr-2" />
+                    </Link>
+                  )}
+                  {userIds === userId && (
+                    <button onClick={deletePost}>
+                      <FontAwesomeIcon icon={faTrash} className="mr-4 w-6 my-3 text-2xl" />
+                    </button>
+                  )}
+                </div>
               </div>
+
               {activeModalData.user && (
                 <div className="flex flex-row">
                   <Image src={activeModalData.user.profilePictureUrl} alt="gambar" className="rounded-full mr-4 w-6 h-6" />
@@ -432,7 +431,7 @@ const ProfilePage = () => {
                   {item.comment}
                   <span className="ml-10">
                     {item.user.id === userIds ? (
-                      <button onClick={() => deleteComment(activeModalData.id, item.id)}>
+                      <button onClick={() => deleteComment(index)}>
                         <FontAwesomeIcon icon={faTrash} className="mr-4 w-6" />
                       </button>
                     ) : null}
@@ -443,7 +442,7 @@ const ProfilePage = () => {
 
             {activeModalData.user && (
               <div className="ml-14 mb-2">
-                <input className="pb-2" type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
+                <input className="pb-2 mr-2" type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
                 <button onClick={() => handleComment(activeModalData.id)}>Post</button>
               </div>
             )}

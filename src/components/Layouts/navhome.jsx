@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Logout from "./logout";
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
@@ -7,6 +7,7 @@ import { UserIcon } from "@heroicons/react/solid";
 import { CogIcon } from "@heroicons/react/solid";
 import { PlusIcon } from "@heroicons/react/solid";
 import { HomeIcon } from "@heroicons/react/solid";
+import Logout from "./logout";
 
 const Navhome = () => {
   const [userId, setUserId] = useState(null);

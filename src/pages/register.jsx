@@ -7,7 +7,9 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Photogram } from "@/components/photogram";
+
+import Button from "@/components/Elements/Button/Index";
+import { Photogram } from "@/components/Layouts/photogram";
 
 function Register() {
   const router = useRouter();
@@ -67,8 +69,6 @@ function Register() {
         },
       })
         .then((res) => {
-          // console.log(res);
-
           alert(res.data.message);
           if (res.data.code === "200") {
             router.push("/login");
@@ -82,10 +82,10 @@ function Register() {
   });
   return (
     <div>
-      <div className="h-screen md:flex bg-lime-200">
+      <div className="h-screen md:flex bg-green-600">
         <Photogram />
 
-        <div className="flex justify-center items-center w-full sm:w-full bg-lime-200 py-6">
+        <div className="flex justify-center items-center w-full sm:w-full bg-green-600 py-6">
           <div className="bg-white p-8 rounded w-3/4 md:w-1/2 shadow-2xl">
             <h5 className="text-center text-xl font-medium mb-2">Register Account</h5>
             <form onSubmit={formik.handleSubmit}>
@@ -100,7 +100,7 @@ function Register() {
                   </div>
 
                   <input
-                    className="w-full border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border rounded "
                     id={value}
                     name={value}
                     type={(value === "password" && showPassword) || (value === "passwordRepeat" && showPassword) ? "password" : "text"}
@@ -118,9 +118,7 @@ function Register() {
                 </label>
               </div>
 
-              <button className="mt-3 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" type="submit" value="Register">
-                Register
-              </button>
+              <Button>Register</Button>
             </form>
 
             <div>

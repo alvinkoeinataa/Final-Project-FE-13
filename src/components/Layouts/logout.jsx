@@ -1,12 +1,11 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
+import React from "react";
+import Button from "../Elements/Button/Index";
 
 function Logout() {
   const router = useRouter();
-  const [userId, setUserId] = useState(null);
-  const [token, setToken] = useState("");
 
   const handleLogout = () => {
     axios
@@ -17,7 +16,6 @@ function Logout() {
         },
       })
       .then((res) => {
-        // console.log(res);
         Cookies.remove("token");
         Cookies.remove("userId");
         Cookies.remove("name");
@@ -29,21 +27,11 @@ function Logout() {
       });
   };
 
-  // useEffect(() => {
-  //   if (!userId || !token) {
-  //     const a = Cookies.get("userId");
-  //     const b = Cookies.get("token");
-
-  //     setUserId(a);
-  //     setToken(b);
-  //   }
-  // }, []);
-
   return (
     <>
-      <button onClick={handleLogout} className="bg-green-600 text-white px-6 py-2 rounded w-32">
+      <Button classname="bg-green-600 w-32" onClick={handleLogout} type="">
         Log Out
-      </button>
+      </Button>
     </>
   );
 }

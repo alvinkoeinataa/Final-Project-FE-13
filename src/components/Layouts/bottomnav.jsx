@@ -1,4 +1,3 @@
-import Navhome from "./navhome";
 import { HomeIcon } from "@heroicons/react/solid";
 
 import { PlusIcon } from "@heroicons/react/solid";
@@ -6,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import Navhome from "@/components/layouts/navhome";
 
 const Bottomnav = () => {
   const [sideNav, setSideNav] = useState(false);

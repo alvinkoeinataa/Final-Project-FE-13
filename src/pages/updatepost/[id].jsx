@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
-import Navhome from "@/components/navhome";
+import Navhome from "@/components/Layouts/navhome";
 
 export default function UpdatePost() {
   const [file, setFile] = useState(null);

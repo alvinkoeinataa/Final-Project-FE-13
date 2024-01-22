@@ -3,8 +3,10 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
-import Navhome from "@/components/navhome";
-import Bottomnav from "@/components/bottomnav";
+import Navhome from "@/components/Layouts/navhome";
+import Bottomnav from "@/components/Layouts/bottomnav";
+import YourFollow from "@/components/Layouts/yourFollow";
+import Button from "@/components/Elements/Button/Index";
 
 function UpdateProfile() {
   const [userId, setUserId] = useState(null);
@@ -14,7 +16,6 @@ function UpdateProfile() {
   const router = useRouter();
 
   const [file, setFile] = useState("");
-  // const [inputFile, setInputFile] = useState("");
 
   const fetchUserData = async () => {
     try {
@@ -132,7 +133,7 @@ function UpdateProfile() {
         <Navhome />
       </div>
 
-      <div className="mt-6 md:col-span-3 flex flex-col items-center pb-6">
+      <div className="mt-6 md:col-span-2 flex flex-col items-center pb-6">
         <h1 className="text-2xl">Update Profile</h1>
         {imageUrl && (
           <div className="flex items-center justify-center">
@@ -142,11 +143,9 @@ function UpdateProfile() {
         <input
           type="file"
           className="mb-2 mx-auto p-2 flex items-center justify-center"
-          // value={inputFile}
           onChange={(e) => {
             setFile(e.target.files[0]);
             setImageUrl(URL.createObjectURL(e.target.files[0]));
-            // setInputFile(e.target.value);
           }}
         />
 
@@ -170,12 +169,12 @@ function UpdateProfile() {
             </div>
           ))}
 
-          <button type="submit" className="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-white font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center">
-            Update
-          </button>
+          <Button classname="bg-blue-700 w-full">Update</Button>
         </form>
       </div>
-
+      <div className="mt-20">
+        <YourFollow />
+      </div>
       <Bottomnav />
     </div>
   );

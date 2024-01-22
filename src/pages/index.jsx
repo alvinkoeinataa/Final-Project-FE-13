@@ -1,17 +1,16 @@
 import Head from "next/head";
 
 import { useState } from "react";
-import { GetMyFollow } from "@/components/getMyFollow";
-import Explore from "@/components/explore";
-import Navhome from "@/components/navhome";
+
+import Button from "@/components/Elements/Button/Index";
+import Explore from "@/components/Layouts/explore";
+import { GetMyFollow } from "@/components/Layouts/getMyFollow";
 
 export default function Home() {
   const [visiblePage, setVisiblePage] = useState("explore");
 
   return (
     <div>
-      {/* <Navhome /> */}
-
       <div>
         <Head>
           <title>Photogram</title>
@@ -20,24 +19,24 @@ export default function Home() {
         <div className="mt-4 p-2 mx-auto   items-center">
           <div className="flex items-center justify-center mb-4">
             <div>
-              <button
+              <Button
+                classname="bg-green-600 mr-4"
                 onClick={() => {
                   setVisiblePage("explore");
                 }}
-                className="text-white py-2 px-3 rounded bg-green-600 mr-4"
               >
                 Explore
-              </button>
+              </Button>
             </div>
             <div>
-              <button
+              <Button
+                classname="bg-green-600"
                 onClick={() => {
                   setVisiblePage("following");
                 }}
-                className="text-white p-2 rounded bg-green-600"
               >
                 Following
-              </button>
+              </Button>
             </div>
           </div>
 

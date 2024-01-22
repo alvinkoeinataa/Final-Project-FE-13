@@ -74,7 +74,6 @@ const UserPost = ({ post }) => {
   };
 
   useEffect(() => {
-    // console.log("isi post adalah:", post);
     setLiked(post.isLike);
     setPostLikes(post.totalLikes);
   }, [post]);
@@ -106,18 +105,18 @@ const UserPost = ({ post }) => {
             </button>
           )}
 
-          <input className="pb-2" type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
+          <input className="pb-2 mr-2" type="text" placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
           {comment && <button onClick={() => handleComment(post.id)}>Post</button>}
         </div>
       )}
 
-      <div className="ml-4">
+      <div className="ml-4 mb-2">
         {postLikes === 0 ? (
           <>
             <span className="fw-normal">Be first to </span>like this
           </>
         ) : (
-          <div className="">
+          <div>
             {postLikes} {postLikes === 1 ? "like" : "likes"}
           </div>
         )}
@@ -125,7 +124,7 @@ const UserPost = ({ post }) => {
       {post.user && (
         <div className="flex flex-col pl-3">
           <div className="flex flex-row">
-            <p className="mr-4 ">{post.user.username}</p>
+            <p className="mr-4 font-bold">{post.user.username}</p>
             <p className="mb-6">{post.caption}</p>
           </div>
         </div>

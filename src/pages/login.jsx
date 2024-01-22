@@ -5,7 +5,9 @@ import * as Yup from "yup";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
-import { Photogram } from "@/components/photogram";
+
+import Button from "@/components/Elements/Button/Index";
+import { Photogram } from "@/components/Layouts/photogram";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -68,7 +70,7 @@ function Login() {
   }, [userId, token]);
   return (
     <div>
-      <div className="h-screen md:flex bg-lime-200">
+      <div className="h-screen md:flex bg-green-600">
         <Photogram />
 
         <div className="flex justify-center items-center w-full h-screen">
@@ -85,12 +87,11 @@ function Login() {
                   </div>
 
                   <input
-                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border rounde"
                     id={value}
                     name={value}
                     type={value !== "password" || showPassword ? "text" : "password"}
                     autoComplete={value}
-                    placeholder={`Type your ${value}`}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values[value]}
@@ -104,9 +105,8 @@ function Login() {
                   <span className="ml-2">Toogle Password</span>
                 </label>
               </div>
-              <button type="submit" className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                Log In
-              </button>
+
+              <Button>Log in</Button>
             </form>
 
             <div className="mt-4">
@@ -119,6 +119,7 @@ function Login() {
                 </span>
               </p>
             </div>
+            {/* <InputForm label="Email" type="text" id={value} name={value} /> */}
           </div>
         </div>
       </div>

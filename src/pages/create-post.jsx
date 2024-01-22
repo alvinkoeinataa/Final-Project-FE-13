@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
-import Navhome from "@/components/navhome";
-import Bottomnav from "@/components/bottomnav";
+import Navhome from "@/components/Layouts/navhome";
+import Bottomnav from "@/components/Layouts/bottomnav";
+import YourFollow from "@/components/Layouts/yourFollow";
+import Button from "@/components/Elements/Button/Index";
+// import Label from "@/components/Elements/Input/Label";
 
 export default function CreatePost() {
   const [file, setFile] = useState("");
@@ -81,7 +84,7 @@ export default function CreatePost() {
       <div className="p-4 md:col-span-1 hidden md:block pt-20">
         <Navhome />
       </div>
-      <div className="max-w-md w-[1200px] mx-auto p-4 rounded shadow bg-blue-100 mt-8 md:col-span-3">
+      <div className="w-full md:col-span-2  mx-auto p-4 rounded shadow bg-white mt-8">
         <h1 className="text-2xl font-semibold mb-4">Create Post</h1>
 
         <h1 className="mt-8 mb-2">Choose your image</h1>
@@ -95,15 +98,14 @@ export default function CreatePost() {
           }}
         />
 
-        <div className="mt-8">
-          <label htmlFor="">Caption</label>
-        </div>
-
+        {/* <Label classname="mt-10">Caption</Label> */}
+        <h2>Caption</h2>
         <input type="text" className="mb-2 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter caption" value={caption} onChange={(e) => setCaption(e.target.value)} />
 
-        <button onClick={handleUpload} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
-          Upload
-        </button>
+        <Button>Upload</Button>
+      </div>
+      <div className="mt-20">
+        <YourFollow />
       </div>
 
       <Bottomnav />
