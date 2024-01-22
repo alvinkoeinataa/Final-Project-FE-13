@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
-import Navhome from "@/components/Layouts/navhome";
+
 import Bottomnav from "@/components/Layouts/bottomnav";
 import YourFollow from "@/components/Layouts/yourFollow";
 import Button from "@/components/Elements/Button/Index";
+import Navhome from "@/components/Layouts/navhome";
 // import Label from "@/components/Elements/Input/Label";
 
 export default function CreatePost() {

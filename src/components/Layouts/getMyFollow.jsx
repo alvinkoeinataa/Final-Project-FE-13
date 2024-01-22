@@ -4,8 +4,9 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import UserPost from "./userPost";
 import YourFollow from "./yourFollow";
-import Navhome from "./navhome";
+
 import Bottomnav from "./bottomnav";
+import Navhome from "./navhome";
 
 export const GetMyFollow = () => {
   const [users, setUsers] = useState([]);

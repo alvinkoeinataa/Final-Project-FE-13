@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 import YourFollow from "./yourFollow";
 
 import Bottomnav from "./bottomnav";
-import Navhome from "@/components/layouts/navhome";
+import Navhome from "@/components/Layouts/navhome";
 
 const Explore = () => {
   const [posts, setPosts] = useState([]);

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import Navhome from "@/components/layouts/navhome";
+import Navhome from "@/components/Layouts/navhome";
 
 const Bottomnav = () => {
   const [sideNav, setSideNav] = useState(false);
