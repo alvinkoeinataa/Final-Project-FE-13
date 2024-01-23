@@ -103,7 +103,7 @@ export default function CreatePost() {
         <h2>Caption</h2>
         <input type="text" className="mb-2 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter caption" value={caption} onChange={(e) => setCaption(e.target.value)} />
 
-        <Button>Upload</Button>
+        <Button onClick={handleUpload}>Upload</Button>
       </div>
       <div className="mt-20">
         <YourFollow />

@@ -23,7 +23,6 @@ const ProfilePage = () => {
   const [user, setUser] = useState("");
   const userIds = Cookies.get("userId");
   const name = Cookies.get("name");
-  // const profilePictureUrl = Cookies.get("profilePictureUrl");
   const [comment, setComment] = useState("");
 
   const defaultModalData = {
@@ -373,7 +372,7 @@ const ProfilePage = () => {
                 openModal(post);
               }}
             >
-              <Image className="w-full h-40 rounded" src={post.imageUrl} alt="Post" />
+              <Image className="w-full h-40 rounded object-cover" src={post.imageUrl} alt="Post" />
             </div>
           ))}
 
