@@ -89,8 +89,8 @@ const UserPost = ({ post }) => {
         </div>
       )}
 
-      <div className="relative w-full max-h-[400px] overflow-hidden flex items-center justify-center">
-        <Image src={post.imageUrl} alt="gambar" className="w-auto h-full object-contain " />
+      <div className="relative w-ful max-h-[400px] overflow-hidden flex items-center justify-center">
+        <Image src={post.imageUrl} alt="gambar" className="w-full h-full object-cover " />
       </div>
 
       {post.user && (

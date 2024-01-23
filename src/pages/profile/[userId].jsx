@@ -319,7 +319,7 @@ const ProfilePage = () => {
 
       <div className="w-3/4 mx-auto md:col-span-3">
         <div className="mt-4 flex flex-col md:flex-row items-center">
-          <img className="w-20 h-20 rounded-full mb-4 md:mb-0" src={userData.profilePictureUrl} alt="Profile" />
+          <img className="w-20 h-20 rounded-full mb-4 md:mb-0 object-cover" src={userData.profilePictureUrl} alt="Profile" />
 
           <div className="md:ml-4">
             <p className="text-xl font-semibold">{userData.username}</p>
